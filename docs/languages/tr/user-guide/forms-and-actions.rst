@@ -1,25 +1,24 @@
+.. EN-Revision: ea20235
 .. _user-guide-forms-and-actions:
 
-#################
-Forms and actions
-#################
+###################
+Formlar ve Eylemler
+###################
 
-Adding new albums
+Yeni albüm ekleme
 -----------------
 
-We can now code up the functionality to add new albums. There are two bits to
-this part:
+Şimdi yeni albüm ekleme işlevi için kod yazalım. Bu işlevde iki nokta
+var:
 
-* Display a form for user to provide details
-* Process the form submission and store to database
+* Kullanıcıya detayları girmesi için bir form görüntüleme
+* Formu işleme ve veritabanına kaydetme
   
-We use ``Zend\Form`` to do this. The ``Zend\Form`` component manages the form
-and for validation, we add a ``Zend\InputFilter`` to our ``Album`` entity. We
-start by creating a new class ``Album\Form\AlbumForm`` that extends from
-``Zend\Form\Form`` to define our form. The class is stored in the
-``AlbumForm.php`` file within the ``module/Album/src/Album/Form`` directory.
-
-Create this file file now:
+Bu işlemler için ``Zend\Form``'u kullanacağız. ``Zend\Form`` bileşeni form ve 
+doğrulamayı yöneterek ``Album`` varlığımız için ``Zend\InputFilter`` ekler.
+Formu tanımlamak için ``module/Album/src/Album/Form`` dizininde ``AlbumForm.php`` 
+dosyasında bulunan ``Zend\Form\Form`` sınıfını genişleten(extend) 
+``Album\Form\AlbumForm`` sınıfını oluşturmakla başlayalım:
 
 .. code-block:: php
 
@@ -70,15 +69,15 @@ Create this file file now:
         }
     }
 
-Within the constructor of ``AlbumForm``, we set the name when we call the parent’s
-constructor and then set the method and then create four form elements for the
-id, artist, title, and submit button. For each item we set various attributes
-and options, including the label to be displayed.
+``AlbumForm`` sınıfının yapıcısında(constructor), ebeveyn yapıcısını çağırarak
+form ismini atadık. Daha sonra, id, artist, title form elemanlarını ve submit 
+butonunu oluşturduk. Her form elemanı için çeşitli nitelik ve seçenekler atadık.
+Görüntülenecek etiket vb. gibi.
 
-We also need to set up validation for this form. In Zend Framework 2 is this
-done using an input filter which can either be standalone or within any class
-that implements ``InputFilterAwareInterface``, such as a model entity. We are
-going to add the input filter to our ``Album`` entity:
+Aynı zamanda bu form için bir doğrulama kurmamız gerekir. Zend Framework 2'de
+doğrulama, input filter kullanarak, bağımsız yada model varlığı gibi
+``InputFilterAwareInterface`` arayüzünü uyarlayan bir sınıf içinde yapılabilir.
+Bu örnekte ``Album`` varlığımıza input filter ekleyeceğiz.
 
 .. code-block:: php
 
@@ -168,20 +167,21 @@ going to add the input filter to our ``Album`` entity:
         }
     }
 
-The ``InputFilterAwareInterface`` defines two methods: ``setInputFilter()`` and
-``getInputFilter()``. We only need to implement ``getInputFilter()`` so we
-simply throw an exception  in ``setInputFilter()``.
+``InputFilterAwareInterface`` arayüzünde iki metod vardır. ``setInputFilter()``
+ve ``getInputFilter()``. Sadece ``getInputFilter()`` metodunu uyarlama ihtiyacımız
+var, ``setInputFilter()`` metodunda sadece bir hata oluşturacağız.
 
-Within ``getInputFilter()``, we instantiate an ``InputFilter`` and then add the
-inputs that we require. We add one input for each property that we wish to
-filter or validate. For the ``id`` field we add an ``Int`` filter as we only
-need integers. For the text elements, we add two filters, ``StripTags`` and
-``StringTrim`` to remove unwanted HTML and unnecessary white space. We also set
-them to be *required* and add a ``StringLength`` validator to ensure that the
-user doesn’t enter more characters than we can store into the database.
+``getInputFilter()`` metodunda, bir ``InputFilter`` örneği oluşturarak gerekli
+girişleri ekleyeceğiz. Filtre ve doğrulama istediğimiz her özellik için bir 
+giriş ekleyeceğiz. ``id`` alanına sadece integer olması için bir ``Int`` filtresi
+ekledik. Metin elemanlar için istenmeyen HTML ve gereksiz boş karakterleri 
+kaldıran ``StripTags`` ve ``StringTrim`` filtrelerini ekledik.  Aynı zamanda
+*required* (zorunlu) olarak ayarladık ve kullanıcının veritabanında saklayabileceğimiz
+karakter sayısından daha fazla giriş yapamayacağından emin olmak için ``StringLength``
+doğrulaması ekledik.
 
-We now need to get the form to display and then process it on submission. This
-is done within the ``AlbumController``’s ``addAction()``:
+Şimdi formu görüntüleme ve gönderildikten sonraki işlemlere bakalım. Bu işlemler
+``AlbumController`` denetçisinin ``addAction()`` eyleminde yapılır:
 
 .. code-block:: php
 
@@ -218,17 +218,17 @@ is done within the ``AlbumController``’s ``addAction()``:
         }
     //...
 
-After adding the ``AlbumForm`` to the use list, we implement ``addAction()``.
-Let’s look at the ``addAction()`` code in a little more detail:
+``AlbumForm``'u namespace use listesine ekledikten sonra ``addAction()`` metodunu
+uyarladık. Şimdi ``addAction()`` metodu kodlarına detaylı olarak bakalım.
 
 .. code-block:: php
 
     $form = new AlbumForm();
     $form->submit->setValue('Add');
 
-We instantiate `AlbumForm` and set the label on the submit button to “Add”. We
-do this here as we’ll want to re-use the form when editing an album and will use
-a different label.
+`AlbumForm` örneğini oluşturduk ve submit butonu etiketini “Add” olarak ayarladık.
+Bunu, formu albüm düzenlemede farklı bir etiket ile tekrar kullanacağımız 
+için yaptık.
 
 .. code-block:: php
 
@@ -239,37 +239,35 @@ a different label.
         $form->setData($request->getPost());
         if ($form->isValid()) {
 
-If the ``Request`` object’s ``isPost()`` method is true, then the form has been
-submitted and so we set the form’s input filter from an album instance. We then
-set the posted data to the form and check to see if it is valid using the
-``isValid()`` member function of the form.                
+Eğer ``Request`` nesnesinin ``isPost()`` metodu true döndürürse form gönderilmiş
+demektir. *form*'un input filtresine *album* örneğinden aldığımız filtreyi gönderdik.
+Daha sonra post edilmiş veriyi *form*'a göderdik ve formun ``isValid()`` metodu ile
+geçerliliğini kontrol ettik.
 
 .. code-block:: php
 
     $album->exchangeArray($form->getData());
     $this->getAlbumTable()->saveAlbum($album);
 
-If the form is valid, then we  grab the data from the form and store to the
-model using ``saveAlbum()``.
+*form* geçerli ise, veriyi *form* dan alıp ``saveAlbum()`` metodu ile modele aktardık.
 
 .. code-block:: php
 
     // Redirect to list of albums
     return $this->redirect()->toRoute('album');
 
-After we have saved the new album row, we redirect back to the list of albums
-using the ``Redirect`` controller plugin.
+Yeni albüm kaydını ekledikten sonra ``Redirect`` controller eklentisi ile albüm
+listesine dönüş için yönlendirdik.
 
 .. code-block:: php
 
     return array('form' => $form);
 
-Finally, we return the variables that we want assigned to the view. In this
-case, just the form object. Note that Zend Framework 2 also allows you to simply
-return an array containing the variables to be assigned to the view and it will
-create a ``ViewModel`` behind the scenes for you. This saves a little typing.
+Son olarak görüntüye aktaracağımız değişkenleri(bu durumda sadece formu) atadık.
+Zend Framework 2, aynı zamanda view a aktarılacak gerekli değişkenleri içeren bir diziyi
+basitçe geri döndürmenize izin verir. Aslında perde arkasında bir ``ViewModel`` yaratılır.
 
-We now need to render the form in the add.phtml view script:
+Şimdi formu görüntülemek için add.phtml view dosyasına ihtiyacımız var:
 
 .. code-block:: php
 
@@ -292,24 +290,24 @@ We now need to render the form in the add.phtml view script:
     echo $this->formSubmit($form->get('submit'));
     echo $this->form()->closeTag();
 
-Again, we display a title as before and then we render the form. Zend Framework
-provides some view helpers to make this a little easier. The ``form()`` view
-helper has an ``openTag()`` and ``closeTag()`` method which we use to open and
-close the form.  Then for each element with a label, we can use ``formRow()``,
-but for the two elements that are standalone, we use ``formHidden()`` and
-``formSubmit()``. 
+Daha önce yaptığımız gibi sayfa başlığını ayarladık sonra formu işledik. Zend 
+Framework, form işlemeyi kolaylaştıran bazı view helperlar sunar. ``form()``
+view helper'ında bulunan ``openTag()`` ve ``closeTag()`` metodları ile formu 
+açıp kapattık (HTML de <form ...> ... </form>). Sonrasında, etiketi olan form 
+elemanları için ``formRow()`` diğer iki eleman için ise ``formHidden()`` ve
+``formSubmit()`` metodlarını kullandık.
 
 .. image:: ../images/user-guide.forms-and-actions.add-album-form.png
     :width: 940 px
 
-You should now be able to use the “Add new album” link on the home page of the
-application to add a new album record.
+Şimdi yeni albüm kaydı eklemek için uygulama ana sayfasında bulunan 
+“Add new album” linkini kullanabiliyor olmalısınız.
 
-Editing an album
-----------------
+Albüm düzenleme
+---------------
 
-Editing an album is almost identical to adding one, so the code is very similar.
-This time we use ``editAction()`` in the ``AlbumController``:
+Albüm düzenleme, ekleme ile neredeyse aynıdır ve kodlar birbirine çok benzer.
+Bu sefer ``AlbumController`` içinde ``editAction()`` eylemini kullanacağız.
 
 .. code-block:: php
 
@@ -351,9 +349,9 @@ This time we use ``editAction()`` in the ``AlbumController``:
         }
     //...
 
-This code should look comfortably familiar. Let’s look at the differences from
-adding an album. Firstly, we look for the ``id`` that is in the matched route
-and use it to load the album to be edited:
+Bu kod oldukça tanıdık geliyor olmalı. Albüm ekleme kodundan farklılıklarına 
+bakalım. İlk önce, eşleşen *route* 'da bulunan ve düzenlenecek albümü yüklemek
+için kullanacağımız ``id``' ye bakalım:
 
 .. code-block:: php
 
@@ -365,11 +363,10 @@ and use it to load the album to be edited:
     }
     $album = $this->getAlbumTable()->getAlbum($id);
 
-``params`` is a controller plugin that provides a convenient way to retrieve
-parameters from the matched route.  We use it to retrieve the ``id`` from the
-route we created in the modules’ ``module.config.php``. If the ``id`` is zero,
-then we redirect to the add action, otherwise, we continue by getting the album
-entity from the database.
+``params`` eşleşen *route* 'dan uygun parametreleri getirmeye yarayan bir
+controller eklentisidir. ``params`` ile modülün ``module.config.php`` dosyasında 
+oluşturduğumuz *route* 'dan ``id``'yi almak için kullandık. Eğer ``id`` sıfır(0) 
+ise ekle eylemine yönlendirdik, değilse veritabananından albüm kaydını getirdik.
 
 .. code-block:: php
 
@@ -377,19 +374,18 @@ entity from the database.
     $form->bind($album);
     $form->get('submit')->setAttribute('value', 'Edit');
 
-The form’s ``bind()`` method attaches the model to the form. This is used in two
-ways:
+*form* 'un ``bind()`` metodu modeli forma iliştirir. Bu iki şekilde kullanılmıştır.
 
-# When displaying the form, the initial values for each element are extracted
-  from the model.
-# After successful validation in isValid(), the data from the form is put back
-  into the model.
+# Form görüntülenirken, her form elemenanın başlangıç değerleri 
+  modelden aktarılır.
+# isValid() ile başarılı doğrulama yapıldıktan sonra, formdaki veri 
+  modele geri konur.
 
-These operations are done using a hydrator object. There are a number of
-hydrators, but the default one is ``Zend\Stdlib\Hydrator\ArraySerializable``
-which expects to find two methods in the model: ``getArrayCopy()`` and
-``exchangeArray()``. We have already written ``exchangeArray()`` in our
-``Album`` entity, so just need to write ``getArrayCopy()``:
+Bu operasyonlar hydrator nesnesi kullanılarak yapılır. Birçok hydrator
+vardır. Bunlardan bir tanasei ise, modelde  ``getArrayCopy()`` ve
+``exchangeArray()`` metodları bekleyen ``Zend\Stdlib\Hydrator\ArraySerializable``
+hydrator üdür. ``Album`` varlığında ``exchangeArray()`` metodunu zaten
+yazmıştık. Şimdi sadece ``getArrayCopy()`` metodunu yazmamız gerekiyor.
 
 .. code-block:: php
 
@@ -409,12 +405,11 @@ which expects to find two methods in the model: ``getArrayCopy()`` and
         }
     // ...
 
-As a result of using ``bind()`` with its hydrator, we do not need to populate the
-form’s data back into the ``$album`` as that’s already been done, so we can just
-call the mappers’ ``saveAlbum()`` to store the changes back to the database.
+``$album`` 'e form verisini tekrar doldurmaya gerek yok, çünkü hydrator ü ile 
+``bind()`` kullanmanın bir sonucu olarak bu zaten yapılmıştır. Böylece sadece
+``saveAlbum()`` metodunu kullanarak değişiklikleri veritabanına kaydederiz.
 
-The view template, ``edit.phtml``, looks very similar to the one for adding an
-album:
+``edit.phtml`` view şablonu albüm eklemede kullanılan şablona oldukça benzerdir:
 
 .. code-block:: php
 
@@ -444,25 +439,25 @@ album:
     echo $this->formSubmit($form->get('submit'));
     echo $this->form()->closeTag();
 
-The only changes are to use the ‘Edit Album’ title and set the form’s action to
-the ‘edit’ action too.
+Değişiklikler sadece, başlık olarak ‘Edit Album’ ve form eylemi olarak ‘edit’ eylemi 
+kullanmaktır.
 
-You should now be able to edit albums.
+Şimdi albümleri düzenleyebiliyor olmalısınız.
 
-Deleting an album
------------------
+Albüm Silme
+-----------
 
-To round out our application, we need to add deletion. We have a Delete link
-next to each album on our list page and the naïve approach would be to do a
-delete when it’s clicked. This would be wrong. Remembering our HTTP spec, we
-recall that you shouldn’t do an irreversible action using GET and should use
-POST instead.
+Uygulamamızı tamamlamak için silme işlemine ihtiyacımız var. Liste sayfamızda
+her albüm kaydının yanında bir silme linki var. Link tıklandığında kaydı hemen
+silme gibi safça bir yaklaşım yanlış olur. HTTP tanımlamalarını göz önüne alarak, 
+GET kullanarak geri dönüşü olmayan bir eylem yapmamanız ve POST kullanmanız
+gerektiğini hatırlatırız.
 
-We shall show a confirmation form when the user clicks delete and if they then
-click “yes”, we will do the deletion. As the form is trivial, we’ll code it
-directly into our view (``Zend\Form`` is, after all, optional!).
+Kullanıcı delete'e tıkladığında bir onay formu göstermek zorundayız. “yes”'e
+tıklayınca silme işlemini yapacağız. Burdaki form çok önemli olmadığı için
+bunu doğrudan view da yapacağız. 
 
-Let’s start with the action code in ``AlbumController::deleteAction()``:
+``AlbumController::deleteAction()`` eylem koduna bakalım:
 
 .. code-block:: php
 
@@ -496,14 +491,14 @@ Let’s start with the action code in ``AlbumController::deleteAction()``:
         }
     //...
 
-As before, we get the ``id`` from the matched route,and check the request
-object’s ``isPost()`` to determine whether to show the confirmation page or to
-delete the album. We use the table object to delete the row using the
-``deleteAlbum()`` method and then redirect back the list of albums. If the
-request is not a POST, then we retrieve the correct database record and assign
-to the view, along with the ``id``.
+Daha önce yaptığımız gibi, eşleşen route'dan ``id``'yi alıyoruz ve onay 
+sayfasını göstermek ya da silme işlemini belirlemek için istek nesnesinin 
+``isPost()`` metodunu kontrol ediyoruz. ``deleteAlbum()`` ile kaydı silmek için 
+album table nesnesini kullanıyoruz ve albüm listesine yönlendirme yapıyoruz.
+İstek POST değil ise ``id`` ile ilgili veritabanı kaydını alarak view'a
+aktarıyoruz.
 
-The view script is a simple form:
+View dosyamız basit bir formdan ibaret:
 
 .. code-block:: php
 
@@ -533,19 +528,19 @@ The view script is a simple form:
     </div>
     </form>
 
-In this script, we display a confirmation message to the user and then a form
-with "Yes" and "No" buttons. In the action, we checked specifically for the “Yes”
-value when doing the deletion.
+Bu dosyada, kullanıcıya bir onay mesajı ve "Yes" ve "No" butonlarından oluşan bir
+form gösteriyoruz. Eylemde silme işlemini yapmak için özellikle "Yes" değerini
+kontrol ediyoruz.
 
-Ensuring that the home page displays the list of albums
--------------------------------------------------------
+Ana sayfanın albüm listesini görüntülemesi
+------------------------------------------
 
-One final point. At the moment, the home page, http://zf2-tutorial.localhost/
-doesn’t display the list of albums. 
+Son olarak; şu an ana sayfamız http://zf2-tutorial.localhost/ albüm listesini
+görüntülemiyor.
 
-This is due to a route set up in the ``Application`` module’s
-``module.config.php``. To change it, open
-``module/Application/config/module.config.php`` and find the home route:
+Nedeni ``Application`` modülünün ``module.config.php`` dosyasındaki *route* 
+yapılandırmasıdır. Değiştirmek için, ``module/Application/config/module.config.php``
+dosyasını açın ve *route* u bulun:
 
 .. code-block:: php
 
@@ -560,8 +555,8 @@ This is due to a route set up in the ``Application`` module’s
         ),
     ),
 
-Change the ``controller`` from ``Application\Controller\Index`` to
-``Album\Controller\Album``:
+``controller`` dan ``Application\Controller\Index`` i 
+``Album\Controller\Album`` olarak değiştir:
 
 .. code-block:: php
 
@@ -570,10 +565,10 @@ Change the ``controller`` from ``Application\Controller\Index`` to
         'options' => array(
             'route'    => '/',
             'defaults' => array(
-                'controller' => 'Album\Controller\Album', // <-- change here
+                'controller' => 'Album\Controller\Album', // <-- burayı değiştir
                 'action'     => 'index',
             ),
         ),
     ),
 
-That’s it - you now have a fully working application!
+İşte bu kadar. Şimdi tamammen çalışan bir uygulamamız var!
