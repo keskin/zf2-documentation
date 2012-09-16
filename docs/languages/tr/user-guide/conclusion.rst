@@ -1,8 +1,9 @@
+.. EN-Revision: 4e4055e
 .. _user-guide.conclusion:
 
-##########
-Conclusion
-##########
+#####
+Sonuç
+#####
 
-This concludes our brief look at building a simple, but fully functional, MVC
-application using Zend Framework 2. 
+Sonuç olarak Zend Framework 2 kullanılarak basit, ama tamamen işlevsel, bir MVC 
+uygulama inşa ettik.
