@@ -1,53 +1,56 @@
+.. EN-Revision: 9012bb7
 .. _user-guide.routing-and-controllers:
 
-#######################
-Routing and controllers
-#######################
+#########################################
+Yönlendirme(Route) ve Denetçi(controller)
+#########################################
 
-We will build a very simple inventory system to display our album
-collection. The home page will list our collection and allow us to add, edit and
-delete albums. Hence the following pages are required:
+Albüm kolleksiyonumuzu göstermek için basit bir envanter sistemi kuracağız.
+Ana sayfa, kolleksiyonumuzu listeleyecek ve ekleme, düzenleme ve silmemizi
+sağlayacak. Bu nedenle aşağıdaki sayfalar gerekecektir.
 
-+---------------+------------------------------------------------------------+
-| Page          | Description                                                |
-+===============+============================================================+
-| Home          | This will display the list of albums and provide links to  |
-|               | edit and delete them. Also, a link to enable adding new    |
-|               | albums will be provided.                                   |
-+---------------+------------------------------------------------------------+
-| Add new album | This page will provide a form for adding a new album.      |
-+---------------+------------------------------------------------------------+
-| Edit album    | This page will provide a form for editing an album.        |
-+---------------+------------------------------------------------------------+
-| Delete album  | This page will confirm that we want to delete an album and |
-|               | then delete it.                                            |
-+---------------+------------------------------------------------------------+
++----------------+------------------------------------------------------------+
+| Sayfa          | Açıklama                                                   |
++================+============================================================+
+| Albüm Listesi  | Bu sayfa albüm listesini görüntüleyecek ve düzenleme ve    |
+|                | silme için link sağlayacak. Aynı zamanda yeni albüm        |
+|                | eklemek için bir bağlantı sağlayacak.                      |
++----------------+------------------------------------------------------------+
+| Yeni albüm     | Bu sayfa yeni bir albüm eklemek için form sağlayacak       |
++----------------+------------------------------------------------------------+
+| Albüm düzenle  | Bu sayfa bir albümü düzenlemek için form sağlayacak        |
++----------------+------------------------------------------------------------+
+| Albüm Sil      | Bu sayfa istediğimiz bir albümün silinmesi için bir onay   |
+|                | sağlayacak.                                                |
++----------------+------------------------------------------------------------+
 
-Before we set up our ﬁles, it’s important to understand how the framework
-expects the pages to be organised. Each page of the application is known as an
-*action* and actions are grouped into *controllers* within *modules*. Hence, you
-would generally group related actions into a controller; for instance, a news
-controller might have actions of ``current``, ``archived`` and ``view``.
+Dosyalarımızı oluşturmadan önce, frameworkün sayfaların düzeni ile ilgili ne
+beklediğini anlamak çok önemlidir. Bütün sayfalar eylem *action* olarak bilinir ve 
+eylemler *modules* içindeki denetçiler *controllers* içinde guruplandırılmıştır.
+Genelde eylemler(action), Denetçiler(controllers) içinde gruplandırılır. 
+Örneğin; Bir haberler denetçisinin(controller) ``güncel``, ``arşiv``, ``görüntüle`` 
+eylemleri(action) olabilir.
 
-As we have four pages that all apply to albums, we will group them in a single
-controller ``AlbumController`` within our ``Album`` module as four actions. The
-four actions will be:
+Dört sayfamız olduğu için, dört eylemi(action) ``Album`` modülü içinde 
+``AlbumController`` adında tek bir denetçide(controller) gruplayacağız. Dört 
+eylemimiz(action) aşağıdaki gibi olacak:
 
-+---------------+---------------------+------------+
-| Page          | Controller          | Action     |
-+===============+=====================+============+
-| Home          | ``AlbumController`` | ``index``  |
-+---------------+---------------------+------------+
-| Add new album | ``AlbumController`` | ``add``    |
-+---------------+---------------------+------------+
-| Edit album    | ``AlbumController`` | ``edit``   |
-+---------------+---------------------+------------+
-| Delete album  | ``AlbumController`` | ``delete`` |
-+---------------+---------------------+------------+
++---------------+---------------------+---------------+
+| Sayfa         | Denetçi(Controller) | Eylem(Action) |
++===============+=====================+===============+
+| Ana Sayfa     | ``AlbumController`` | ``index``     |
++---------------+---------------------+---------------+
+| Yeni albüm    | ``AlbumController`` | ``add``       |
++---------------+---------------------+---------------+
+| Albüm düzenle | ``AlbumController`` | ``edit``      |
++---------------+---------------------+---------------+
+| Albüm sil     | ``AlbumController`` | ``delete``    |
++---------------+---------------------+---------------+
 
-The mapping of a URL to a particular action is done using routes that are deﬁned
-in the module’s ``module.config.php`` file. We will add a route for our album
-actions. This is the updated conﬁg file with the new code commented.
+Bir URL ile belirli bir eylemin(action) eşleşmesi, modülün ``module.config.php`` 
+dosyasında tanımlanmış yönlendirmeler(routes) ile yapılır. ``album`` eylemimize(action)
+bir yönlendirme(route) tanımlayacağız. Yeni kodumuz açıklaması ile birlikte güncellenmiş
+yapılandırma dosyamız:
 
 .. code-block:: php
 
@@ -59,7 +62,7 @@ actions. This is the updated conﬁg file with the new code commented.
             ),
         ),
 
-        // The following section is new and should be added to your file
+        // aşağıdaki yeni bölümü dosyanıza eklemelisiniz
         'router' => array(
             'routes' => array(
                 'album' => array(
@@ -86,53 +89,52 @@ actions. This is the updated conﬁg file with the new code commented.
         ),
     );
 
-The name of the route is ‘album’ and has a type of ‘segment’. The segment route
-allows us to specify placeholders in the URL pattern (route) that will be mapped
-to named parameters in the matched route. In this case, the route is
-**``/album[/:action][/:id]``** which will match any URL that starts with
-``/album``. The next segment will be an optional action name, and then ﬁnally
-the next segment will be mapped to an optional id. The square brackets indicate
-that a segment is optional. The constraints section allows us to ensure that the
-characters within a segment are as expected, so we have limited actions to
-starting with a letter and then subsequent characters only being alphanumeric,
-underscore or hyphen. We also limit the id to a number.
+Yönlendirme(route) adı ‘album’ ve tipi ‘segment’ tir. Segment yönlendirmeler, URL
+kalıbı içinde isim parametrelerinin eşleşmesi için belirli placeholderlar sağlar.
+Yapılandırma dosyamızda bulunan **``/album[/:action][/:id]``** segment yönlendirmesi
+göre ``/album`` ile başlayan bütün URL ler ile eşleşir. Sonraki segment isteğe bağlı
+eylem(action) adı ``[/:action]``, diğer segment ise isteğe bağlı id alanı ``[/:id]``
+ile eşleşir. Köşeli parantezler segmentin isteğe bağlı olduğunu belirtir.
+``constraints`` bölümü segmentlerin beklenen karakter kurallarını belirlememizi sağlar.
+Bu durumda ``action`` harf ile başlayıp sonraki karakterleri harf, rakam, - ve _ olabilecek
+şekilde kısıtlanmıştır. ``id`` ise sayısal olarak sınırlandırılmıştır.
 
-This route allows us to have the following URLs:
+Bu yönlendirme bize aşağıdaki URL'leri sağlar:
 
 +---------------------+------------------------------+------------+
-| URL                 | Page                         | Action     |
+| URL                 | Sayfa                        | Eylem      |
 +=====================+==============================+============+
-| ``/album``          | Home (list of albums)        | ``index``  |
+| ``/album``          | Ana Sayfa (albüm listesi)    | ``index``  |
 +---------------------+------------------------------+------------+
-| ``/album/add``      | Add new album                | ``add``    |
+| ``/album/add``      | Yeni Albüm                   | ``add``    |
 +---------------------+------------------------------+------------+
-| ``/album/edit/2``   | Edit album with an id of 2   | ``edit``   |
+| ``/album/edit/2``   | id si 2 olan albümü düzenle  | ``edit``   |
 +---------------------+------------------------------+------------+
-| ``/album/delete/4`` | Delete album with an id of 4 | ``delete`` |
+| ``/album/delete/4`` | id si 4 olan albümü sil      | ``delete`` |
 +---------------------+------------------------------+------------+
 
-Create the controller
-=====================
+Denetçiyi(controller) Oluştur
+=============================
 
-We are now ready to set up our controller. In Zend Framework 2, the controller
-is a class that is generally called ``{Controller name}Controller``. Note that
-``{Controller name}`` must start with a capital letter.  This class lives in a ﬁle
-called ``{Controller name}Controller.php`` within the ``Controller`` directory for the
-module. In our case that is ``module/Album/src/Album/Controller``. Each action is
-a public method within the controller class that is named ``{action name}Action``.
-In this case ``{action name}`` should start with a lower case letter.
+Şimdi denetçimizi(controller) kurmak için hazırız. Zend Framework 2'de, denetçi 
+(controller) ``{Controller name}Controller`` adlandırılan bir sınıftır. 
+``{Controller name}`` 'in büyük harf ile başlaması gerektiğini unutmayın. Bu sınıf
+``Controller`` dizinindeki ``{Controller name}Controller.php`` dosyası içindedir.
+Dersimize göre ``module/Album/src/Album/Controller`` dizinidir. Her eylemin(action)
+denetçi(controller) içinde ``{action name}Action`` adında public metodu vardır.
+``{action name}`` küçük harf ile başlamalıdır.
 
 .. note::
 
-    This is by convention. Zend Framework 2 doesn’t provide many
-    restrictions on controllers other than that they must implement the
-    ``Zend\Stdlib\Dispatchable`` interface. The framework provides two abstract
-    classes that do this for us: ``Zend\Mvc\Controller\AbstractActionController``
-    and ``Zend\Mvc\Controller\AbstractRestfulController``. We’ll be using the
-    standard ``AbstractActionController``, but if you’re intending to write a
-    RESTful web service, ``AbstractRestfulController`` may be useful.
+    Kural Gereği: Zend Framework 2 denetçiler üzerinde ``Zend\Stdlib\Dispatchable``
+    arabirimini implemente etmedikleri sürece herhangi bir kısıtlama sağlamaz.
+    Framework, bunun için bize 2 soyut sınıf sağlar: 
+    ``Zend\Mvc\Controller\AbstractActionController`` ve 
+    ``Zend\Mvc\Controller\AbstractRestfulController``. Biz standart
+    ``AbstractActionController`` sınıfını kullanacağız. Fakat RESTful web servisi
+    yazacaksanız ``AbstractRestfulController`` sizin için kullanışlı olabilir.
 
-Let’s go ahead and create our controller class:
+Denetçi(controller) sınıfımızı oluşturarak devam edelim:
 
 .. code-block:: php
 
@@ -163,14 +165,14 @@ Let’s go ahead and create our controller class:
 
 .. note::
 
-    We have already informed the module about our controller in the
-    ‘controller’ section of ``config/module.config.php``.
+    Modülümüze, ``config/module.config.php`` dosyasındaki ‘controller’
+    bölümümüzde denetçimiz hakkında bilgi vermiştik.
 
-We have now set up the four actions that we want to use. They won’t work yet
-until we set up the views. The URLs for each action are:
+Şimdi kullanmak istediğimiz dört eylemi yazalım. Eylemler, görüntü(view) dosyalarını 
+oluşturmadan çalışmazlar. Her eylem için URL'ler aşağıdaki gibidir:
 
 +--------------------------------------------+----------------------------------------------------+
-| URL                                        | Method called                                      |
+| URL                                        | Çağrılan metod                                     |
 +============================================+====================================================+
 | http://zf2-tutorial.localhost/album        | ``Album\Controller\AlbumController::indexAction``  |
 +--------------------------------------------+----------------------------------------------------+
@@ -181,23 +183,22 @@ until we set up the views. The URLs for each action are:
 | http://zf2-tutorial.localhost/album/delete | ``Album\Controller\AlbumController::deleteAction`` |
 +--------------------------------------------+----------------------------------------------------+
 
-We now have a working router and the actions are set up for each page of our
-application.
+Şu an uygulamamızın çalışan bir yönlendiricisi(router) ve eylemleri hazır.
 
-It’s time to build the view and the model layer.
+Görüntü(view) ve modellerimizi oluşturmanın zamanı geldi.
 
-Initialise the view scripts
----------------------------
+Görüntü dosyalarını hazırlayalım
+--------------------------------
 
-To integrate the view into our application all we need to do is create some view
-script files. These ﬁles will be executed by the ``DefaultViewStrategy`` and will be
-passed any variables or view models that are returned from the controller action
-method. These view scripts are stored in our module’s views directory within a
-directory named after the controller. Create these four empty files now:
+Uygulamamıza görüntü entegre etmek için tek yapmamız gereken birkaç görütü(view)
+dosyası oluşturmaktır. Görüntü dosyaları ``DefaultViewStrategy`` tarafından çalıştırılacak,
+denetçi(controller) eylemine(action) değişken olarak aktarılacak veya görüntü modeli 
+olarak dönecektir. Görüntü dosyaları modül görüntü dizini içindeki adı denetçi adı olan
+dizinde bulunur. Şimdi aşağıdaki isimlerde boş görüntü dosyaları oluşturalım.
 
 * ``module/Album/view/album/album/index.phtml``
 * ``module/Album/view/album/album/add.phtml``
 * ``module/Album/view/album/album/edit.phtml``
 * ``module/Album/view/album/album/delete.phtml``
 
-We can now start filling everything in, starting with our database and models.
+Şimdi veritabanı ve modeller ile eksiklerimizi giderebiliriz. 
