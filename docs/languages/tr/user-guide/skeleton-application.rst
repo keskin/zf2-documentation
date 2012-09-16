@@ -1,32 +1,30 @@
+.. EN-Revision: bb788a9
 .. _user-guide.skeleton-application:
 
-#######################################
-Getting started: A skeleton application
-#######################################
+###########################
+Başlarken: İskelet Uygulama
+###########################
 
-In order to build our application, we will start with the
-`ZendSkeletonApplication <https://github.com/zendframework/ZendSkeletonApplication>`_ 
-available on `github <https://github.com/>`_. 
-Go to https://github.com/zendframework/ZendSkeletonApplication and click the “Zip”
-button. This will download a ﬁle with a name like
-``zendframework-ZendSkeletonApplication-zfrelease-2.0.0beta5-2-gc2c7315.zip`` or
-similar. 
+Uygulamamızı oluştururken `github <https://github.com/>`_ 
+ta bulunan `ZendSkeletonApplication <https://github.com/zendframework/ZendSkeletonApplication>`_ 
+ile başlayacağız. https://github.com/zendframework/ZendSkeletonApplication adresine
+gidip “Zip” butonuna tıklayarak ``zendframework-ZendSkeletonApplication-zfrelease-2.0.0beta5-2-gc2c7315.zip``
+benzer bir isimdeki dosyayı indiriniz.
 
-Unzip this ﬁle into the directory where you keep all your vhosts and rename the
-resultant directory to ``zf2-tutorial``. 
+Bu dosyayı sanal hostlarınızı tuttuğunuz dizine açıp ismini ``zf2-tutorial`` 
+olarak değiştiriniz.
 
-ZendSkeletonApplication is set up to use Composer (http://getcomposer.org) to
-resolve its dependencies. In this case, the dependency is Zend Framework 2
-itself.
+ZendSkeletonApplication bağımlılıkları çözümlemek için Composer (http://getcomposer.org)
+kullanmak üzere ayarlanmıştır. Dersimizde sözkonusu bağımlılık Zend Framework 2'dir.
 
-To install Zend Framework 2 into our application we simply type:
+Zend Framework 2'yi kurmak için ``zf2-tutorial`` dizininden basitçe şu komutları yazıyoruz:
 
 .. code-block:: bash
 
     php composer.phar self-update
     php composer.phar install
 
-from the ``zf2-tutorial`` folder. This takes a while. You should see an output like:
+Bu biraz zaman alabilir. Şöyle bir çıktı görmelisiniz:
 
 .. code-block:: bash
 
@@ -38,41 +36,41 @@ from the ``zf2-tutorial`` folder. This takes a while. You should see an output l
 
 .. note::
 
-    If you see this message: 
-
+    Eğer şu mesajı görürseniz: 
+    
     .. code-block:: bash
 
         [RuntimeException]      
           The process timed out. 
 
-    then your connection was too slow to download the entire package in time, and composer
-    timed out. To avoid this, instead of running:
+    bağlantınız tüm paketi belli bir zamanda indirmek için yavaş ve Composer zaman
+    aşımına uğramıştır. Bunu önlemek için, bunun yerine:
 
     .. code-block:: bash
 
         php composer.phar install
 
-    run instead:
+    bunu çalıştırıyoruz:
 
     .. code-block:: bash
 
         COMPOSER_PROCESS_TIMEOUT=5000 php composer.phar install
 
-We can now move on to the virtual host.
+Şimdi sanal host yapılandırmasına geçebiliriz.
 
-Virtual host
-------------
+Sanal host
+----------
 
-You now need to create an Apache virtual host for the application and edit your
-hosts ﬁle so that http://zf2-tutorial.localhost will serve ``index.php`` from the
-``zf2-tutorial/public`` directory.
+Şimdi, uygulama için Apache sanal host oluşturmanız gerekiyor. hosts dosyanızı 
+http://zf2-tutorial.localhost adresinin ``zf2-tutorial/public`` dizinindeki
+``index.php`` üzerinden hizmet verecek şekilde düzenleyiniz.
 
-Setting up the virtual host is usually done within ``httpd.conf`` or
-``extra/httpd-vhosts.conf``. (If you are using ``httpd-vhosts.conf``, ensure
-that this ﬁle is included by your main ``httpd.conf`` ﬁle.) 
+Sanal host yapılandırması genelde ``httpd.conf`` veya ``extra/httpd-vhosts.conf``
+içinden yapılır. (Eğer ``httpd-vhosts.conf`` dosyasını kullanıyorsanız, bu dosyanın
+``httpd.conf`` dosyasından çağrıldığından emin olunuz.)
 
-Ensure that ``NameVirtualHost`` is deﬁned and set to “\*:80” or similar, and then
-deﬁne a virtual host along these lines:
+``NameVirtualHost`` direktifinin “\*:80” veya benzeri şekilde tanımlandığına emin olunuz
+ve aşağıdaki gibi bir sanal host tanımlayınız:
 
 .. code-block:: apache
 
@@ -88,28 +86,26 @@ deﬁne a virtual host along these lines:
         </Directory>
     </VirtualHost>
 
-Make sure that you update your ``/etc/hosts`` or
-``c:\windows\system32\drivers\etc\hosts`` ﬁle so that ``zf2-tutorial.localhost``
-is mapped to ``127.0.0.1``. The website can then be accessed using
-http://zf2-tutorial.localhost.  
+``zf2-tutorial.localhost`` adresinin ``127.0.0.1`` i gösterecek şekilde ``/etc/hosts`` 
+veya ``c:\windows\system32\drivers\etc\hosts`` dosyanızı güncellediğinizden emin olunuz.
+Bu durumda web sitesi http://zf2-tutorial.localhost adresinden erişilebilir.
 
 .. code-block:: txt
 
     127.0.0.1               zf2-tutorial.localhost localhost
 
-If you’ve done it right, you should see something like this:
+Eğer yapılandırmayı doğru şekilde yaparsanız şöyle birşey görmelisiniz:
 
 .. image:: ../images/user-guide.skeleton-application.hello-world.png
     :width: 940 px
 
-To test that your ``.htaccess`` ﬁle is working, navigate to
-http://zf2-tutorial.localhost/1234 and you should see this:
+``.htaccess`` dosyasının çalıştığını görmek için http://zf2-tutorial.localhost/1234 
+sayfasına gidiniz. Şöyle bir sayfa görmelisiniz:
 
 .. image:: ../images/user-guide.skeleton-application.404.png
     :width: 940 px
 
-If you see a standard Apache 404 error, then you need to ﬁx ``.htaccess`` usage
-before continuing.
+Eğer standart Apache 404 hatası görürseniz, devam etmeden önce ``.htaccess``
+kullanım hatasını gidermelisiniz.
 
-You now have a working skeleton application and we can start adding the speciﬁcs
-for our application.
+Şimdi çalışan bir iskelet uygulamamız var ve uygulamamıza özellikler eklemeye başlayabiliriz.
