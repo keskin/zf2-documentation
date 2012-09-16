@@ -1,68 +1,71 @@
+.. EN-Revision: 4e4055e
 .. _user-guide.overview:
+##########################
+Zend Framework 2 Başlarken
+##########################
 
-#####################################
-Getting Started with Zend Framework 2
-#####################################
-
-This tutorial is intended to give an introduction to using Zend Framework 2 by
-creating a simple database driven application using the Model-View-Controller
-paradigm. By the end you will have a working ZF2 application and you can then
-poke around the code to ﬁnd out more about how it all works and ﬁts together.
+Bu ders, Zend Framework 2 ile Model-View-Controller paradigması kullanarak
+giriş niteliğinde veritabanı desteği olan basit bir uygulamanın nasıl 
+oluşturulacağına yönelik hazırlanmıştır. Dersin sonunda çalışan bir ZF2 
+uygulamanız olacak. Sonrasında nasıl çalıştığı hakkında daha fazla bilgi 
+edinmek için kodu kurcalayabilirsiniz.
 
 .. _user-guide.overview.assumptions:
 
-Some assumptions
+Bazı Varsayımlar
 ----------------
 
-This tutorial assumes that you are running PHP 5.3.10 with the Apache web server
-and MySQL, accessible via the PDO extension. Your Apache installation must have
-the mod_rewrite extension installed and conﬁgured.
+Bu ders, PDO uzantısına erişilebilen PHP 5.3.10, Apache web sunucusu ve MySQL 
+çalıştırdığınızı varsayar. Apache, mod_rewrite uzantısı ile kurulmuş
+ve yapılandırılmış olmalıdır.
 
-You must also ensure that Apache is conﬁgured to support ``.htaccess`` ﬁles. This is
-usually done by changing the setting:
+Ayrıca Apache'nin ``.htaccess`` dosya desteği ile yapılandırılmış olduğuna emin olunuz.
+Genelde, ``httpd.conf`` dosyasında;
 
 .. code-block:: apache
 
     AllowOverride None
 
-to
+ayarı
 
 .. code-block:: apache
 
     AllowOverride  All
 
-in your ``httpd.conf`` ﬁle. Check with your distribution’s documentation for
-exact details. You will not be able to navigate to any page other than the home
-page in this tutorial if you have not conﬁgured mod_rewrite and .htaccess usage
-correctly
+şeklinde değiştirilerek yapılır.
 
-The tutorial application
-------------------------
+Tam detaylar için dağıtımınızın dökümanlarına bakınız.
+mod_rewrite ve .htaccess yapılandırmanız doğru olmadığı müddetçe bu dersteki
+ana sayfa dışında diğer sayfaları gezinmek mümkün olmayacaktır.
 
-The application that we are going to build is a simple inventory system to
-display which albums we own. The main page will list our collection and allow us
-to add, edit and delete CDs. We are going to need four pages in our website:
+Ders Uygulaması
+---------------
+
+Yapacağımız uygulama, sahip olduğumuz albümleri listeleyen basit bir envanter 
+sistemi olacak. Ana sayfa albüm kolleksiyonumuzu listeleyecek ve CD leri ekleme, 
+düzenleme ve silmemize olanak sağlayacak. Web sitemiz için dört sayfaya
+ihtiyacımız olacak:
 
 +----------------+------------------------------------------------------------+
-| Page           | Description                                                |
+| Sayfa          | Açıklama                                                   |
 +================+============================================================+
-| List of albums | This will display the list of albums and provide links to  |
-|                | edit and delete them. Also, a link to enable adding new    |
-|                | albums will be provided.                                   |
+| Albüm Listesi  | Bu sayfa albüm listesini görüntüleyecek ve düzenleme ve    |
+|                | silme için link sağlayacak. Aynı zamanda yeni albüm        |
+|                | eklemek için bir bağlantı sağlayacak.                      |
 +----------------+------------------------------------------------------------+
-| Add new album  | This page will provide a form for adding a new album.      |
+| Yeni albüm     | Bu sayfa yeni bir albüm eklemek için form sağlayacak       |
 +----------------+------------------------------------------------------------+
-| Edit album     | This page will provide a form for editing an album.        |
+| Albüm düzenle  | Bu sayfa bir albümü düzenlemek için form sağlayacak        |
 +----------------+------------------------------------------------------------+
-| Delete album   | This page will confirm that we want to delete an album and |
-|                | then delete it.                                            |
+| Albüm Sil      | Bu sayfa istediğimiz bir albümün silinmesi için bir onay   |
+|                | sağlayacak.                                                |
 +----------------+------------------------------------------------------------+
 
-We will also need to store our data into a database. We will only need one table
-with these ﬁelds in it:
+Aynı zamanda verileri tutmak için bir veritabanına ihtiyacımız olacak. Sadece
+içinde aşağıdaki alanlar olan bir tabloya ihtiyacımız var.
 
 +------------+--------------+-------+-----------------------------+
-| Field name | Type         | Null? | Notes                       |
+| Alan Adı   | Tip          | Boş?  | Notlar                      |
 +============+==============+=======+=============================+
 | id         | integer      | No    | Primary key, auto-increment |
 +------------+--------------+-------+-----------------------------+
@@ -70,4 +73,3 @@ with these ﬁelds in it:
 +------------+--------------+-------+-----------------------------+
 | title      | varchar(100) | No    |                             |
 +------------+--------------+-------+-----------------------------+
-
