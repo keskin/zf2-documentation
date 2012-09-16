@@ -1,23 +1,23 @@
+.. EN-Revision: 4be0cd1
 .. _user-guide.database-and-models:
 
-###################
-Database and models
-###################
+######################
+Veritabanı ve Modeller
+######################
 
-The database
-------------
+Veritabanı
+----------
 
-Now that we have the ``Album`` module set up with controller action methods and
-view scripts, it is time to look at the model section of our application.
-Remember that the model is the part that deals with the application’s core
-purpose (the so-called “business rules”) and, in our case, deals with the
-database. We will make use of the Zend Framework class
-``Zend\Db\TableGateway\TableGateway`` which is used to find, insert, update and
-delete rows from a database table.
+``Album`` modülümüz, denetleyici(controller) eylem(action) metodları ve görüntü(view)
+dosyaları ile birlikte kuruldu ve şimdi uygulamamızın model bölümüne bakma zamanı 
+geldi. Modellerin uygulamanın ana amacı ile ilgili olduğunu unutmayın. Uygulamamız 
+için model, veritabanı ile ilgilidir. Zend Framework ``Zend\Db\TableGateway\TableGateway`` 
+sınıfını, veritabanı tablosundan arama, ekleme, güncelleme ve silme işlemleri yapmak 
+için kullanacağız.
 
-We are going to use MySQL, via PHP’s PDO driver, so create a database called
-``zf2tutorial``, and run these SQL statements to create the album table with some
-data in it.
+PHP PDO sürücüsü üzerinden MySQL kullanacağız. Bu nedele ``zf2tutorial`` adında
+bir veritabanı yaratalım ve album tablosu oluşturup içine birkaç test verisi eklemek
+için aşağıdaki SQL'i çalıştıralım.
 
 .. code-block:: sql
 
@@ -38,31 +38,29 @@ data in it.
     INSERT INTO album (artist, title)
         VALUES  ('Gotye',  'Making  Mirrors');
 
-(The test data chosen happens to be the Bestsellers on Amazon UK at the time of
-writing!)
+(Seçilen test verisi bu dökümanın yazıldığı anda Amazon UK'da en çok satanlardır!)
 
-We now have some data in a database and can write a very simple model for it.
+Veritabanımızda birkaç verimiz var. Şimdi basit bir model yazabiliriz.
 
-The model files
+Model Dosyaları
 ---------------
 
-Zend Framework does not provide a ``Zend\Model`` component as the model is your
-business logic and it’s up to you to decide how you want it to work. There are
-many components that you can use for this depending on your needs. One approach
-is to have model classes represent each entity in your application and then
-use mapper objects that load and save entities to the database. Another is to
-use an ORM like Doctrine or Propel.
+Zend Framework iş mantığınız ile ilgili bir ``Zend\Model`` bileşeni sağlamaz. 
+ve iş mantığınızın nasıl çalışacağına karar vermek size kalmıştır. Bunun için 
+ihtiyaçlarınıza göre birçok bileşen vardır. Bir yaklaşıma göre; Model sınıflarının 
+uygulamanızdaki her varlığı temsil etmesi sonra varlıkları veritabanına yükleyip 
+kaydetmesidir. Bir diğeri ise Doctrine veya Propel gibi bir ORM kullanmaktır.
 
-For this tutorial, we are going to create a very simple model by creating an
-``AlbumTable`` class that extends ``Zend\Db\TableGateway\TableGateway`` where
-each album object is an ``Album`` object (known as an *entity*). This is an
-implementation of the Table Data Gateway design pattern to allow for interfacing
-with data in a database table. Be aware though that the Table Data Gateway
-pattern can become limiting in larger systems. There is also a temptation to put
-database access code into controller action methods as these are exposed by
-``Zend\Db\TableGateway\AbstractTableGateway``. *Don’t do this*!
+Bu derste, her albümün ``Album`` nesnesi (varlık-*entity*- olarak bilinir) olduğu
+``Zend\Db\TableGateway\TableGateway`` sınıfını genişleten(extend) ``AlbumTable`` 
+sınıfı yaratarak çok basit bir model oluşturacağız. Bu model, veritabanı 
+tablosundaki kayıtlara erişimi sağlayan bir arabirim olan Table Data Gateway
+tasarım deseni uyarlamasıdır. Table Data Gateway deseninin büyük sistemlerde
+sınırlayıcı olabileceğini unutmayın. ``Zend\Db\TableGateway\AbstractTableGateway``
+ile veritabanı erişim kodlarını denetleyici (controller) eylem(action) metodları 
+içine koymak gibi bir hata yapmayın!
 
-Let’s start with our ``Album`` entity class within the ``Model`` directory:
+``Model`` dizinindeki ``Album`` varlık(entity) sınıfı ile başlayalım:
 
 .. code-block:: php
 
@@ -83,14 +81,14 @@ Let’s start with our ``Album`` entity class within the ``Model`` directory:
         }
     }
 
-Our ``Album`` entity object is a simple PHP class. In order to work with
-``Zend\Db``’s ``AbstractTableGateway`` class, we need to implement the
-``exchangeArray()`` method. This method simply copies the data from the passed
-in array to our entity’s properties. We will add an input filter for use with
-our form later.
+``Album`` varlık nesnemiz basit bir PHP dosyasıdır. ``Zend\Db``’nin 
+``AbstractTableGateway`` sınıfı ile çalışmak için ``exchangeArray()`` metodunu
+uyarlamamız gerekir. Bu metod basitçe dizi ile gelen veriyi varlığımızın
+özelliklerine aktarır. Daha sonra bu özellikleri kullanmak üzere formumuza filtre
+kutusu ekleyeceğiz.
 
-Next, we extend ``Zend\Db\TableGateway\AbstractTableGateway`` and create our own
-``AlbumTable`` class in the module’s ``Model`` directory like this:
+Sırada modülümüzün ``Model`` dizininde ``Zend\Db\TableGateway\AbstractTableGateway``'i 
+genişleten ``AlbumTable`` sınıfımız var.
 
 .. code-block:: php
 
@@ -154,39 +152,37 @@ Next, we extend ``Zend\Db\TableGateway\AbstractTableGateway`` and create our own
         }
     }
 
-There’s a lot going on here. Firstly, we set the protected property ``$table``
-to the name of the database table, ‘album’ in this case. We then write a
-constructor that takes a database adapter as its only parameter and assigns it
-to the adapter property of our class. We then need to tell the table gateway’s
-result set that whenever it creates a new row object, it should use an ``Album``
-object to do so. The ``TableGateway`` classes use the prototype pattern for
-creation of result sets and entities. This means that instead of instantiating
-when required, the system clones a previously instantiated object. See 
-`PHP Constructor Best Practices and the Prototype Pattern 
-<http://ralphschindler.com/2012/03/09/php-constructor-best-practices-and-the-prototype-pattern>`_
-for more details.
+Öncelikle; ``$table`` korunan(protected) özelliğine
+veritabanı tablo ismi olan ‘album’'ü atadık. Sadece veritabanı bağdaştırıcısı
+(Adapter) parametresi alan ve bu parametreyi sınıfın ``$adapter`` bağdaştırıcısına 
+atayan bir yapıcı(constructor) yazdık. Sonra table gateway'in sonuç kümesine 
+her zaman yeni bir kayıt nesnesi oluşturması ve bu işlem için ``Album`` nesnesini 
+kullanması gerektiğini söyledik. ``TableGateway`` sınıfları sonuç kümeleri(result set)
+ve varlıkları(entity) oluşturmak için prototype tasarım desenini kullanır. Böylece
+sistem daha önce oluşturulmuş neseneyi kullanır, yoksa sadece gerektiğinde nesne 
+oluşturulur. Detaylar için: `PHP Constructor Best Practices and the Prototype Pattern 
+<http://ralphschindler.com/2012/03/09/php-constructor-best-practices-and-the-prototype-pattern>`_.
 
-We then create some helper methods that our application will use to interface
-with the database table.  ``fetchAll()`` retrieves all albums rows from the
-database as a ``ResultSet``, ``getAlbum()`` retrieves a single row as an
-``Album`` object, ``saveAlbum()`` either creates a new row in the database or
-updates a row that already exists and ``deleteAlbum()`` removes the row
-completely. The code for each of these methods is, hopefully, self-explanatory.
+Daha sonra uygulamamızın veritabanı tablosu ile arayüzünü kullanacak birkaç yardımcı
+(helper) metod oluşturduk. ``fetchAll()`` ``ResultSet`` olarak veritabanından bütün
+kayıtları getirir. ``getAlbum()`` ``Album`` nesnesi olarak tek bir kayıt getirir. 
+``saveAlbum()`` yeni bir kayıt oluşturur veya var olan kaydı günceller. ``deleteAlbum()``
+kaydı tamamen siler. Üç metoddaki kodlar oldukça açık zaten.
 
-Using ServiceManager to configure the database credentials and inject into the controller
------------------------------------------------------------------------------------------
+ServiceManager kullanarak veritabanı erişim bilgilerini yapılandırma ve denetçi(controller)'ye aktarma
+------------------------------------------------------------------------------------------------------
 
-In order to always use the same instance of our ``AlbumTable``, we will use the
-``ServiceManager`` to define how to create one. This is most easily done in the
-Module class where we create a method called ``getServiceConfig()`` which is
-automatically called by the ``ModuleManager`` and applied to the ``ServiceManager``.
-We’ll then be able to retrieve it in our controller when we need it.
+Daima aynı ``AlbumTable`` örneğimizin kullanılması için, ``ServiceManager``’a örneği
+nasıl oluşturacağını tanımlamalıyız. Bu en kolay, ``ModuleManager`` tarafından 
+otomatik olarak çağrılan ve ``ServiceManager``’a uygulanan ``getServiceConfig()``
+metodu ile yapılır. Böylece örneğimize ihtiyacımız olduğunda denetçimizden kolayca 
+erişebiliriz. 
 
-To configure the ``ServiceManager``, we can either supply the name of the class
-to be instantiated or a factory (closure or callback) that instantiates the
-object when the ``ServiceManager`` needs it. We start by implementing
-``getServiceConfig()`` to provide a factory that creates an ``AlbumTable``. Add
-this method to the bottom of the ``Module`` class.
+``ServiceManager``’ı yapılandırmak için, temsil edecek sınıfın ismini veya
+nesnelerin örneğini oluşturan bir factory(closure veya callback) sağlayabiliriz.
+``AlbumTable`` oluşturan bir factory sağlamak için ``getServiceConfig()`` metodunu
+uyarlamaya başlayalım. Aşağıdaki metodu ``Module`` sınıfının en altına bu metodu
+ekleyin.
 
 .. code-block:: php
 
@@ -215,17 +211,25 @@ this method to the bottom of the ``Module`` class.
         }
     }
 
-This method returns an array of ``factories`` that are all merged together by
-the ``ModuleManager`` before passing to the ``ServiceManager``. We also need to
-configure the ``ServiceManager`` so that it knows how to get a
-``Zend\Db\Adapter\Adapter``. This is done using a factory called
-``Zend\Db\Adapter\AdapterServiceFactory`` which we can configure within the
-merged config system. Zend Framework 2’s ``ModuleManager`` merges all the
-configuration from each module’s ``module.config.php`` file and then merges in
-the files in ``config/autoload`` (``*.global.php`` and then ``*.local.php``
-files). We’ll add our database configuration information to ``global.php`` which
-you should commit to your version control system. You can use ``local.php``
-(outside of the VCS) to store the credentials for your database if you want to:
+Bu metod, ``ServiceManager``’a geçmeden önce ``ModuleManager`` tarafından
+birleştirilmiş bir ``factories`` dizisi döndürür. Ayrıca ``ServiceManager``’ı
+``Zend\Db\Adapter\Adapter`` nesnesini nasıl alacağını bileceği şekilde
+yapılandırmalıyız. Bunu; ``Zend\Db\Adapter\AdapterServiceFactory`` nesnesini
+çağıran bir factory kullanarak birleştirilmiş yapılandırma sistemi içinde
+kolayca yapabiliriz. Zend Framework 2’nin ``ModuleManager``'ı her modülün
+``module.config.php`` dosyasını birleştirir ve sonrasında ``config/autoload``'da
+(``*.global.php`` ve ``*.local.php`` dosyaları) bulunan dosyalar ile birleştirir.
+
+Şimdi versiyon kontrol sistemine gönderilmiş ``global.php`` dosyasına veritabanı
+bağlantısı yapılandırma bilgisini ekleyeceğiz. İsterseniz veritabanı erişim bilgilerini 
+``local.php`` dosyasında tutabilirsiniz.
+
+Note:
+    Burada anlatılmak istenen; veritabanı ile ilgili korunması gereken kullanıcı adı
+    ve şifre gibi bilgilerin açığa çıkmaması için local.php dosyasının versiyon 
+    kontrol sistemlerinde(svn, csv, git vb.) gözükmemesi gerektiğidir. Bu nedenle 
+    bağlantı sürücüsü, veri kaynağı ve bağlantı seçenekleri global.php de kullanıcı
+    adı ve şifre bilgileri ise local.php de tutuluyor.
 
 .. code-block:: php
 
@@ -246,8 +250,8 @@ you should commit to your version control system. You can use ``local.php``
         ),
     );
 
-You should put your database credentials in ``config/autoload/local.php`` so
-that they are not in the git repository (as ``local.php`` is ignored):
+Veritabanı kimlik bilgilerini github depoda bulunmayan ``config/autoload/local.php``
+dosyasında tutmalısınız. (github depo da local.php dosyası göz ardı edilir.)
 
 .. code-block:: php
 
@@ -259,9 +263,9 @@ that they are not in the git repository (as ``local.php`` is ignored):
         ),
     );
 
-Now that the ``ServiceManager`` can create an ``AlbumTable`` instance for us, we
-can add a method to the controller to retrieve it. Add ``getAlbumTable()`` to
-the ``AlbumController`` class:
+Şimdi ``ServiceManager`` bir ``AlbumTable`` örneği yaratabilir. Bu örneğe erişmesi
+için denetçiye bir metod ekleyebiliriz. ``AlbumController`` sınıfına ``getAlbumTable()``
+metodunu ekleyelim.
 
 .. code-block:: php
 
@@ -275,25 +279,23 @@ the ``AlbumController`` class:
             return $this->albumTable;
         }
 
-You should also add:
+Aynı zamanda sınıfın başına:
 
 .. code-block:: php
 
     protected $albumTable;
 
-to the top of the class.
+kodunu eklemelisiniz.
 
-We can now call ``getAlbumTable()`` from within our controller whenever we need
-to interact with our model. Let’s start with a list of albums when the ``index``
-action is called.
+Controllerımız içinden istediğimiz zaman modelimizle etkileşime geçecek 
+``getAlbumTable()`` metodunu çağırabiliriz. Şimdi ``index`` eylemi çağrılınca
+albümleri listeleyelim.
 
-Listing albums
---------------
+Albüm Listesi
+-------------
 
-In order to list the albums, we need to retrieve them from the model and pass
-them to the view. To do this, we fill in ``indexAction()`` within
-``AlbumController``.  Update the ``AlbumController``’s ``indexAction()`` like
-this:
+Albümleri listelemek için, modelden verileri alıp view'a aktarmalıyız. Bunun için
+``AlbumController`` içinde ``indexAction()`` eylemini yazmalıyız:
 
 .. code-block:: php
 
@@ -307,12 +309,12 @@ this:
         }
     // ...
 
-With Zend Framework 2, in order to set variables in the view, we return a
-``ViewModel`` instance where the first parameter of the constructor is an array
-from the action containing data we need. These are then automatically passed to
-the view script. The ``ViewModel`` object also allows us to change the view
-script that is used, but the default is to use ``{controller name}/{action
-name}``. We can now fill in the ``index.phtml`` view script:
+Zend Framework 2'de, view'a değişkenler gönderebilmek için, ilk parametresi, 
+ihtiyacımız olan veriyi içeren diziye sahip ``ViewModel`` örneği döndürürüz.
+``ViewModel`` nesnesi aynı zamanda hangi view dosyasını kullanılacağını
+belirlememize olanak sağlar. Fakat kullanılan varsayılan dosya
+``{controller name}/{action name}`` 'dir. Şimdi ``index.phtml`` view dosyasını
+oluşturalım.
 
 .. code-block:: php
 
@@ -346,36 +348,33 @@ name}``. We can now fill in the ``index.phtml`` view script:
     <?php endforeach; ?>
     </table>
 
-The first thing we do is to set the title for the page (used in the layout) and
-also set the title for the ``<head>`` section using the ``headTitle()`` view
-helper which will display in the browser’s title bar. We then create a link to
-add a new album. 
+Yaptığımız ilk iş sayfa başlığını ayarlamak (layout içinde kullanılan) ve aynı 
+zamanda ``headTitle()`` view helperını kullanarak tarayıcının başlık çubuğunda 
+görüntülenen ``<head>`` bölümü için başlığı ayarlamak. Sonrasında yeni albüm eklemek
+için bir lik oluşturduk.
 
-The ``url()`` view helper is provided by Zend Framework 2 and is used to create
-the links we need. The first parameter to ``url()`` is the route name we wish to use
-for construction of the URL, and the the second parameter is an array of all the
-variables to fit into the placeholders to use. In this case we use our ‘album’
-route which is set up to accept two placeholder variables: ``action`` and ``id``. 
+Zend Framework 2 tarafından sağlanan ``url()`` view helperı ihtiyacımız olan linkleri 
+oluşturmak için kullanılır. ``url()``'in ilk parametresi URL i oluşturmak için
+kullanmak istediğimi yoldur. İkinci parametre ise kullanılacak placeholderlar 
+içine eşleşen bütün değişkenleri tutan bir dizidir. Örneğimizde yol için ‘album’
+placeholder değişkenleri için ``action`` ve ``id``'yi kullandık.
 
-We iterate over the ``$albums`` that we assigned from the controller action. The
-Zend Framework 2 view system automatically ensures that these variables are
-extracted into the scope of the view script, so that we don’t have to worry
-about prefixing them with ``$this->`` as we used to have to do with Zend
-Framework 1; however you can do so if you wish. 
+Controller actionından atadığımız ``$albums`` değişkenini ele alalım. Zend 
+Framework 2 view sistemi, değişkenleri otomatik olarak view dosyası kapsamında
+parçalar(extract). Böylece Zend Framework 1 deki gibi değişkenlerin başına 
+``$this->`` eklemek zorunda kalmıyoruz. Fakat isterseniz ``$this->var``
+şeklinde de kullanabilirsiniz.
 
-We then create a table to display each album’s title and artist, and provide
-links to allow for editing and deleting the record. A standard ``foreach:`` loop
-is used to iterate over the list of albums, and we use the alternate form using
-a colon and ``endforeach;`` as it is easier to scan than to try and match up
-braces. Again, the ``url()`` view helper is used to create the edit and delete
-links.
+Daha sonra her bir albümün başlık ve sanatçısını listeleyen ve düzenleme ve silme
+işlevi sağlayan bir tablo oluşturduk. Standart bir ``foreach:`` döngüsü ile albüm 
+listesini yazdırdık. Ve tekrar düzenleme ve silme linkleri oluşturmak için ``url()`` 
+view helper ını kullandık.
 
 .. note::
 
-    We always use the ``escapeHtml()`` view helper to help protect
-    ourselves from XSS vulnerabilities.  
+    XSS açıklarından korunmak için her zaman ``escapeHtml()`` view helper'ını kullanırız.
 
-If you open http://zf2-tutorial.localhost/album you should see this:
+http://zf2-tutorial.localhost/album sayfasını açtığınızdaki şöyle bir ekran görmelisiniz:
 
 .. image:: ../images/user-guide.database-and-models.album-list.png
     :width: 940 px
