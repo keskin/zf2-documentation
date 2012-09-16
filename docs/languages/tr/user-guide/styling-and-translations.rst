@@ -1,27 +1,27 @@
+.. EN-Revision: d4e4bc6
 .. _user-guide.styling-and-translations:
 
-########################
-Styling and Translations
-########################
+###################
+Biçimleme ve Çeviri
+###################
 
-We’ve picked up the SkeletonApplication’s styling, which is fine, but we need to
-change the title and and remove the copyright message. 
+SkeletonApplication'ın biçimlemesini olduğu gibi almıştık, fakat sayfa başlığını
+ve telif hakkı mesajını değiştirmemiz gerekiyor.
 
-The ZendSkeletonApplication is set up to use ``Zend\I18n``’s translation
-functionality for all the text. It uses ``.po`` files that live in
-``Application/language``, and you need to use `poedit
-<http://www.poedit.net/download.php/>`_ to change the text. Start poedit and
-open ``application/language/en_US.po``. Click on “Skeleton Application” in the
-list of ``Original`` strings and then type in “Tutorial” as the translation.
+ZendSkeletonApplication tüm metinler için ``Zend\I18n``'in çeviri işlevini kullanmak
+için yapılandırılmıştır. Bileşen ``Application/language`` dizinindeki ``.po`` dosyalarını
+kullanır. Metinleri değiştirmek için `poedit <http://www.poedit.net/download.php/>`_
+'e ihtiyacınız olacak. ``Original`` yazı listesindeki “Skeleton Application” 'a 
+tıklayıp çevirisine “Tutorial” yazın.
 
 .. image:: ../images/user-guide.styling-and-translations.poedit.png
 
-Press Save in the toolbar and poedit will create an ``en_US.mo`` file for us.  
-If you find that no ``.mo`` file is generated, check ``Preferences -> Editor -> Behavior`` 
-and see if the checkbox marked ``Automatically compile .mo file on save`` is checked.
+Araç çubuğundaki Save butonuna tıklayınca poedit bizim için ``en_US.mo`` dosyası 
+oluşturacak. Eğer ``.mo`` dosyasını oluşturulmamışsa, ``Preferences -> Editor -> Behavior``
+daki ``Automatically compile .mo file on save`` kutusunun işaretleyin.
 
-To remove the copyright message, we need to edit the ``Application`` module’s
-``layout.phtml`` view script:
+Telif hakkı mesajını değiştirmek için, ``Application`` modülünün ``layout.phtml``
+view dosyasını değiştirmeliyiz.
 
 .. code-block:: php
 
@@ -30,7 +30,7 @@ To remove the copyright message, we need to edit the ``Application`` module’s
     <p>&copy; 2005 - 2012 by Zend Technologies Ltd. <?php echo $this->translate('All 
     rights reserved.') ?></p>
 
-The page now looks ever so slightly better now!
+Sayfa şimdi her zamankinden daha iyi görünüyor.
 
 .. image:: ../images/user-guide.styling-and-translations.translated-image.png
     :width: 940 px
