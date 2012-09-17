@@ -7,13 +7,13 @@ Modüller
 
 Zend Framework 2, modül sistemi kullanır ve her modül içinde uygulamaya özgü 
 kodlarınızı organize edersiniz. İskelet uygulaması tarafından sağlanan 
-Application modülü ise, bütün uygulama için bootstrapping sağlaması ve hata ve 
+Application modülü ise, bütün uygulama için bootstrapping sağlaması, hata ve 
 yönlendirme yapılandırması için kullanılır. Modüller genellikle, örneğin; bir 
 uygulamanın giriş sayfası için uygulama seviyesi kontrol sağlamak için kullanılır.
-Fakat bu derste İskelet Uygulaması tarafından sağlanan modülü kullanmayacağız. 
+Fakat bu derste SkeletonApplication tarafından sağlanan modülü kullanmayacağız. 
 Kendi modülümüzde bulunacak albüm listesini ana sayfa olarak kullanmayı düşünüyoruz. 
 
-Bütün kodlarımızı kontroller, modeller, formlar ve görüntü dosyalarını içeren Albüm
+Bütün kodlarımızı denetçi, model, form ve görüntü dosyalarını içeren Albüm
 modülü içine koyacağız. Ayrıca gerektiğinde Application modülüne de el atacağız.
 
 Gerekli olan dizinler ile başlayalım.
@@ -40,14 +40,14 @@ oluşturmakla başlayalım:
                         /album
 
 Gördüğünüz gibi ``Album`` modülü ayrı dizinler ve farklı türdeki dosyalardan oluşmaktadır.
-``Album`` namespace inde bulunan sınıflarımızı içeren PHP dosyaları ``src/Album``
-dizininde bulunur. Böylece gerektiğinde modülümüz için birden fazla namespace e
+``Album`` namespaceinde bulunan sınıflarımızı içeren PHP dosyaları ``src/Album``
+dizininde bulunur. Böylece gerektiğinde modülümüz için birden fazla namespacee
 sahip olabiliriz.
 
 Zend Framework 2 modülleri yüklemek ve yapılandırmak için ``ModuleManager``
 kullanır. ``ModuleManager`` modül ana dizininde (``module/Album``), ``Module.php``
 ye bakar ve içinde ``Album\Module`` adında sınıf olması gerekir. Modül
-içindeki sınıflar modül adı(modül dizininin adı) namespace inde bulunmalıdır.
+içindeki sınıflar modül adı(modül dizininin adı) namespaceinde bulunmalıdır.
 
 ``Album`` modülünde ``Module.php`` oluştur:
 
@@ -84,30 +84,30 @@ metodlarını otomatik olarak çağırır.
 Otomatik dosya yükleme
 ^^^^^^^^^^^^^^^^^^^^^^
 
-``getAutoloaderConfig()`` metodumuz ZF2'nin ``AutoloaderFactory`` sine uygun
-boş bir dizi döndürür. ``ClassmapAutoloader`` a bir sınıf eşleşme dosyası
-ekleyerek yapılandırırız ve aynı zamanda modül namespace ini ``StandardAutoloader`` a
+``getAutoloaderConfig()`` metodumuz ZF2’nin ``AutoloaderFactory``’sine uygun
+boş bir dizi döndürür. ``ClassmapAutoloader``’a bir sınıf eşleşme dosyası
+ekleyerek yapılandırırız ve aynı zamanda modül namespaceini ``StandardAutoloader``’a
 ekleriz. Standart autoloader için, namespace ve namespace için gerekli olan dosyaların
 bulunduğu dizin bilgisi gerekir. Bu PSR-0 uyumludur ve böylece sınıflar 
 `PSR-0 kuralları
-<https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md>`_ na
+<https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md>`_ ’na
 göre dosyaları doğrudan eşler.
 
 Geliştirme aşamasında olduğumuz için dosyaları classmap ile yüklemeye ihtiyacımız yok.
-Bu nedenle clasmap autoloader a boş bir dizi sağlayalım.
+Bu nedenle clasmap autoloader’a boş bir dizi sağlayalım.
 
 .. code-block:: php
 
     // module/Album/autoload_classmap.php:
     return array();
 
-Bu boş bir dizi olduğu için, autoloader ``Album`` namespace inde bir sınıf aradığında,
+Bu boş bir dizi olduğu için, autoloader ``Album`` namespace’inde bir sınıf aradığında,
 ``StandardAutoloader`` a geri düşecektir.
 
 .. note::
 
     Alternatif olarak Composer kullandığımızda, ``getAutoloaderConfig()`` uyarlaması
-    yapamazsınız ve ``composer.json`` a "module/Application/src"`` ``psr-0`` anahtarı
+    yapamazsınız ve ``composer.json``’a "module/Application/src"`` ``psr-0`` anahtarı
     ekleyemezsiniz.
 
 Yapılandırma
@@ -136,9 +136,9 @@ bir göz atalım. Bu metod basitçe ``config/module.config.php`` dosyasını yü
 
 Yapılandırma bilgisi ``ServiceManager`` ile ilgili bileşenlere aktarılır.
 Yapılandırma için ``controllers`` ve ``view_manager`` bölümleri gerekir. 
-controllers bölümü modül tarafından sağlanan tüm kontrollerin listesini içerir. 
-Burada ``AlbumController`` adında bir kontrole ihtiyacımız olacak. kontrol
-anahtarı tüm modüller içinde benzersiz olmalı. Bu yüzden kontrol adının başına
+controllers bölümü modül tarafından sağlanan tüm denetçilerin listesini içerir. 
+Burada ``AlbumController`` adında bir denetçiye ihtiyacımız olacak. controllers
+anahtarı tüm modüller içinde benzersiz olmalı. Bu yüzden controllers adının başına
 modül adını ekledik.
 
 ``view_manager`` bölümünde, ``TemplatePathStack`` yapılandırması ile görüntü
@@ -148,9 +148,9 @@ dosyaları dizinini ekleriz. Bu, Album modülü için gerekli görüntü dosyala
 Uygulamaya yeni modülü tanıtma
 ------------------------------
 
-Şimdi ``ModuleManager`` a yeni bir modülümüzün olduğunu söylemeliyiz. Bu, İskelet 
-uygulaması tarafından sağlanan ``config/application.config.php`` dosyası ile yapılır.
-``modules`` bölümüne ``Album`` modülünü ekleyin. Böylece dosyanın son hali:
+Şimdi ``ModuleManager`` a yeni bir modülümüzün olduğunu söylemeliyiz. Bu, 
+SkeletonApplication tarafından sağlanan ``config/application.config.php`` dosyası 
+ile yapılır. ``modules`` bölümüne ``Album`` modülünü ekleyin. Böylece dosyanın son hali:
 
 (Değişiklik açıklama bölümü ile belirtilmiştir.)
 
@@ -160,7 +160,7 @@ uygulaması tarafından sağlanan ``config/application.config.php`` dosyası ile
     return array(
         'modules' => array(
             'Application',
-            'Album',                  // <-- Add this line
+            'Album',                  // <-- Bu satırı ekleyin
         ),
         'module_listener_options' => array( 
             'config_glob_paths'    => array(

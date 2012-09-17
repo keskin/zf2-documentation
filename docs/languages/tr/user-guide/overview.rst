@@ -4,11 +4,34 @@
 Zend Framework 2 Başlarken
 ##########################
 
-Bu ders, Zend Framework 2 ile Model-View-Controller paradigması kullanarak
-giriş niteliğinde veritabanı desteği olan basit bir uygulamanın nasıl 
+Bu ders giriş niteliğinde, Zend Framework 2 ile Model-View-Controller paradigması 
+kullanarak, veritabanı desteği olan basit bir uygulamanın nasıl 
 oluşturulacağına yönelik hazırlanmıştır. Dersin sonunda çalışan bir ZF2 
 uygulamanız olacak. Sonrasında nasıl çalıştığı hakkında daha fazla bilgi 
 edinmek için kodu kurcalayabilirsiniz.
+
+.. note::
+
+    **Çeviri notları:** Yazılım dünyasında genel kabül görmüş ve belirli bir durum veya 
+	özelliği tanımlayan/anlatan bazı terimlerin Türkçe’ye çevrimi çok zordur. Örneğin:
+	clousure, placeholder, hydrator vb. Bu terimlerin doğrudan kelime anlamını vermek
+	bazı anlam kaymalarına neden olacak ve dökümanının anlaşılmasını zorlaştıracaktır.
+	
+	Bu nedenle bu terimleri türkçeye çevirmeden olduğu gibi bıraktım. Aşağıdaki listede
+	bulunan terimleri ise en yakın türkçe kelimeye çevrimini yaptım. Dökümanı okumadan önce
+	bu listeye bir göz atmanızda fayda var.
+	
+	* controller:	denetçi
+	* action:		eylem
+	* view:			görüntü
+	* routing:		yönlendirme
+	* roter:		yönlendirici
+	* route:		yön
+	* constructor:	yapıcı
+	* helper:		yardımcı
+	* plugin:		eklenti
+	* extend:		genişletmek
+	* implement:	uyarlamak
 
 .. _user-guide.overview.assumptions:
 
@@ -34,15 +57,15 @@ ayarı
 
 şeklinde değiştirilerek yapılır.
 
-Tam detaylar için dağıtımınızın dökümanlarına bakınız.
-mod_rewrite ve .htaccess yapılandırmanız doğru olmadığı müddetçe bu dersteki
-ana sayfa dışında diğer sayfaları gezinmek mümkün olmayacaktır.
+Tam detaylar için dağıtımınızın dökümanlarına bakınız. mod_rewrite ve .htaccess 
+yapılandırmanız doğru olmadığı müddetçe bu dersteki ana sayfa dışında diğer 
+sayfaları gezinmek mümkün olmayacaktır.
 
 Ders Uygulaması
 ---------------
 
 Yapacağımız uygulama, sahip olduğumuz albümleri listeleyen basit bir envanter 
-sistemi olacak. Ana sayfa albüm kolleksiyonumuzu listeleyecek ve CD leri ekleme, 
+sistemi olacak. Ana sayfa albüm kolleksiyonumuzu listeleyecek ve CD’leri ekleme, 
 düzenleme ve silmemize olanak sağlayacak. Web sitemiz için dört sayfaya
 ihtiyacımız olacak:
 

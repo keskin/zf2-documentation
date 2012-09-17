@@ -8,7 +8,7 @@ Veritabanı ve Modeller
 Veritabanı
 ----------
 
-``Album`` modülümüz, denetleyici(controller) eylem(action) metodları ve görüntü(view)
+``Album`` modülümüz, denetleyici eylem metodları ve görüntü
 dosyaları ile birlikte kuruldu ve şimdi uygulamamızın model bölümüne bakma zamanı 
 geldi. Modellerin uygulamanın ana amacı ile ilgili olduğunu unutmayın. Uygulamamız 
 için model, veritabanı ile ilgilidir. Zend Framework ``Zend\Db\TableGateway\TableGateway`` 
@@ -17,7 +17,7 @@ için kullanacağız.
 
 PHP PDO sürücüsü üzerinden MySQL kullanacağız. Bu nedele ``zf2tutorial`` adında
 bir veritabanı yaratalım ve album tablosu oluşturup içine birkaç test verisi eklemek
-için aşağıdaki SQL'i çalıştıralım.
+için aşağıdaki SQL’i çalıştıralım.
 
 .. code-block:: sql
 
@@ -38,7 +38,7 @@ için aşağıdaki SQL'i çalıştıralım.
     INSERT INTO album (artist, title)
         VALUES  ('Gotye',  'Making  Mirrors');
 
-(Seçilen test verisi bu dökümanın yazıldığı anda Amazon UK'da en çok satanlardır!)
+(Seçilen test verisi bu dökümanın yazıldığı anda Amazon UK’da en çok satanlardır!)
 
 Veritabanımızda birkaç verimiz var. Şimdi basit bir model yazabiliriz.
 
@@ -60,7 +60,7 @@ sınırlayıcı olabileceğini unutmayın. ``Zend\Db\TableGateway\AbstractTableG
 ile veritabanı erişim kodlarını denetleyici (controller) eylem(action) metodları 
 içine koymak gibi bir hata yapmayın!
 
-``Model`` dizinindeki ``Album`` varlık(entity) sınıfı ile başlayalım:
+``Model`` dizinindeki ``Album`` varlık sınıfı ile başlayalım:
 
 .. code-block:: php
 
@@ -87,7 +87,7 @@ uyarlamamız gerekir. Bu metod basitçe dizi ile gelen veriyi varlığımızın
 özelliklerine aktarır. Daha sonra bu özellikleri kullanmak üzere formumuza filtre
 kutusu ekleyeceğiz.
 
-Sırada modülümüzün ``Model`` dizininde ``Zend\Db\TableGateway\AbstractTableGateway``'i 
+Sırada modülümüzün ``Model`` dizininde ``Zend\Db\TableGateway\AbstractTableGateway``’i 
 genişleten ``AlbumTable`` sınıfımız var.
 
 .. code-block:: php
@@ -153,9 +153,9 @@ genişleten ``AlbumTable`` sınıfımız var.
     }
 
 Öncelikle; ``$table`` korunan(protected) özelliğine
-veritabanı tablo ismi olan ‘album’'ü atadık. Sadece veritabanı bağdaştırıcısı
+veritabanı tablo ismi olan ‘album’’ü atadık. Sadece veritabanı bağdaştırıcısı
 (Adapter) parametresi alan ve bu parametreyi sınıfın ``$adapter`` bağdaştırıcısına 
-atayan bir yapıcı(constructor) yazdık. Sonra table gateway'in sonuç kümesine 
+atayan bir yapıcı(constructor) yazdık. Sonra table gateway’in sonuç kümesine 
 her zaman yeni bir kayıt nesnesi oluşturması ve bu işlem için ``Album`` nesnesini 
 kullanması gerektiğini söyledik. ``TableGateway`` sınıfları sonuç kümeleri(result set)
 ve varlıkları(entity) oluşturmak için prototype tasarım desenini kullanır. Böylece
@@ -164,12 +164,12 @@ oluşturulur. Detaylar için: `PHP Constructor Best Practices and the Prototype 
 <http://ralphschindler.com/2012/03/09/php-constructor-best-practices-and-the-prototype-pattern>`_.
 
 Daha sonra uygulamamızın veritabanı tablosu ile arayüzünü kullanacak birkaç yardımcı
-(helper) metod oluşturduk. ``fetchAll()`` ``ResultSet`` olarak veritabanından bütün
+metod oluşturduk. ``fetchAll()`` ``ResultSet`` olarak veritabanından bütün
 kayıtları getirir. ``getAlbum()`` ``Album`` nesnesi olarak tek bir kayıt getirir. 
 ``saveAlbum()`` yeni bir kayıt oluşturur veya var olan kaydı günceller. ``deleteAlbum()``
 kaydı tamamen siler. Üç metoddaki kodlar oldukça açık zaten.
 
-ServiceManager kullanarak veritabanı erişim bilgilerini yapılandırma ve denetçi(controller)'ye aktarma
+ServiceManager kullanarak veritabanı erişim bilgilerini yapılandırma ve denetçi’ye aktarma
 ------------------------------------------------------------------------------------------------------
 
 Daima aynı ``AlbumTable`` örneğimizin kullanılması için, ``ServiceManager``’a örneği
@@ -216,15 +216,16 @@ birleştirilmiş bir ``factories`` dizisi döndürür. Ayrıca ``ServiceManager`
 ``Zend\Db\Adapter\Adapter`` nesnesini nasıl alacağını bileceği şekilde
 yapılandırmalıyız. Bunu; ``Zend\Db\Adapter\AdapterServiceFactory`` nesnesini
 çağıran bir factory kullanarak birleştirilmiş yapılandırma sistemi içinde
-kolayca yapabiliriz. Zend Framework 2’nin ``ModuleManager``'ı her modülün
-``module.config.php`` dosyasını birleştirir ve sonrasında ``config/autoload``'da
+kolayca yapabiliriz. Zend Framework 2’nin ``ModuleManager``’ı her modülün
+``module.config.php`` dosyasını birleştirir ve sonrasında ``config/autoload``’da
 (``*.global.php`` ve ``*.local.php`` dosyaları) bulunan dosyalar ile birleştirir.
 
 Şimdi versiyon kontrol sistemine gönderilmiş ``global.php`` dosyasına veritabanı
 bağlantısı yapılandırma bilgisini ekleyeceğiz. İsterseniz veritabanı erişim bilgilerini 
 ``local.php`` dosyasında tutabilirsiniz.
 
-Note:
+.. note::
+
     Burada anlatılmak istenen; veritabanı ile ilgili korunması gereken kullanıcı adı
     ve şifre gibi bilgilerin açığa çıkmaması için local.php dosyasının versiyon 
     kontrol sistemlerinde(svn, csv, git vb.) gözükmemesi gerektiğidir. Bu nedenle 
@@ -287,15 +288,15 @@ Aynı zamanda sınıfın başına:
 
 kodunu eklemelisiniz.
 
-Controllerımız içinden istediğimiz zaman modelimizle etkileşime geçecek 
+Denetçimiz içinden istediğimiz zaman modelimizle etkileşime geçecek 
 ``getAlbumTable()`` metodunu çağırabiliriz. Şimdi ``index`` eylemi çağrılınca
 albümleri listeleyelim.
 
 Albüm Listesi
 -------------
 
-Albümleri listelemek için, modelden verileri alıp view'a aktarmalıyız. Bunun için
-``AlbumController`` içinde ``indexAction()`` eylemini yazmalıyız:
+Albümleri listelemek için, modelden verileri alıp görüntü dosyasına aktarmalıyız. 
+Bunun için ``AlbumController`` içinde ``indexAction()`` eylemini yazmalıyız:
 
 .. code-block:: php
 
@@ -309,11 +310,11 @@ Albümleri listelemek için, modelden verileri alıp view'a aktarmalıyız. Bunu
         }
     // ...
 
-Zend Framework 2'de, view'a değişkenler gönderebilmek için, ilk parametresi, 
+Zend Framework 2'de, görüntüye değişkenler gönderebilmek için, ilk parametresi, 
 ihtiyacımız olan veriyi içeren diziye sahip ``ViewModel`` örneği döndürürüz.
-``ViewModel`` nesnesi aynı zamanda hangi view dosyasını kullanılacağını
-belirlememize olanak sağlar. Fakat kullanılan varsayılan dosya
-``{controller name}/{action name}`` 'dir. Şimdi ``index.phtml`` view dosyasını
+``ViewModel`` nesnesi aynı zamanda hangi görüntü dosyasını kullanılacağını
+belirlememize olanak sağlar. Fakat kullanılan, varsayılan dosya
+``{controller name}/{action name}`` ’dir. Şimdi ``index.phtml`` görüntü dosyasını
 oluşturalım.
 
 .. code-block:: php
@@ -349,30 +350,31 @@ oluşturalım.
     </table>
 
 Yaptığımız ilk iş sayfa başlığını ayarlamak (layout içinde kullanılan) ve aynı 
-zamanda ``headTitle()`` view helperını kullanarak tarayıcının başlık çubuğunda 
+zamanda ``headTitle()`` görüntü yardımcısını kullanarak tarayıcının başlık çubuğunda 
 görüntülenen ``<head>`` bölümü için başlığı ayarlamak. Sonrasında yeni albüm eklemek
-için bir lik oluşturduk.
+için bir link oluşturduk.
 
-Zend Framework 2 tarafından sağlanan ``url()`` view helperı ihtiyacımız olan linkleri 
-oluşturmak için kullanılır. ``url()``'in ilk parametresi URL i oluşturmak için
-kullanmak istediğimi yoldur. İkinci parametre ise kullanılacak placeholderlar 
+Zend Framework 2 tarafından sağlanan ``url()`` görüntü yardımcısı ihtiyacımız olan linkleri 
+oluşturmak için kullanılır. ``url()``’in ilk parametresi URL’i oluşturmak için
+kullanmak istediğimiz yoldur. İkinci parametre ise kullanılacak placeholderlar 
 içine eşleşen bütün değişkenleri tutan bir dizidir. Örneğimizde yol için ‘album’
-placeholder değişkenleri için ``action`` ve ``id``'yi kullandık.
+placeholder değişkenleri için ``action`` ve ``id``’yi kullandık.
 
-Controller actionından atadığımız ``$albums`` değişkenini ele alalım. Zend 
-Framework 2 view sistemi, değişkenleri otomatik olarak view dosyası kapsamında
-parçalar(extract). Böylece Zend Framework 1 deki gibi değişkenlerin başına 
+Denetçi eyleminden atadığımız ``$albums`` değişkenini ele alalım. Zend 
+Framework 2 görüntü sistemi, değişkenleri otomatik olarak görüntü dosyası kapsamında
+parçalar(extract). Böylece Zend Framework 1’deki gibi değişkenlerin başına 
 ``$this->`` eklemek zorunda kalmıyoruz. Fakat isterseniz ``$this->var``
 şeklinde de kullanabilirsiniz.
 
 Daha sonra her bir albümün başlık ve sanatçısını listeleyen ve düzenleme ve silme
 işlevi sağlayan bir tablo oluşturduk. Standart bir ``foreach:`` döngüsü ile albüm 
 listesini yazdırdık. Ve tekrar düzenleme ve silme linkleri oluşturmak için ``url()`` 
-view helper ını kullandık.
+görüntü yardımcısını kullandık.
 
 .. note::
 
-    XSS açıklarından korunmak için her zaman ``escapeHtml()`` view helper'ını kullanırız.
+    XSS açıklarından korunmak için her zaman ``escapeHtml()`` görüntü yardımcısını
+	kullanırız.
 
 http://zf2-tutorial.localhost/album sayfasını açtığınızdaki şöyle bir ekran görmelisiniz:
 

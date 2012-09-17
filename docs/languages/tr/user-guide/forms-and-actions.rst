@@ -8,13 +8,12 @@ Formlar ve Eylemler
 Yeni albüm ekleme
 -----------------
 
-Şimdi yeni albüm ekleme işlevi için kod yazalım. Bu işlevde iki nokta
-var:
+Şimdi yeni albüm ekleme işlevi için kod yazalım. Bu işlevde iki nokta var:
 
 * Kullanıcıya detayları girmesi için bir form görüntüleme
 * Formu işleme ve veritabanına kaydetme
   
-Bu işlemler için ``Zend\Form``'u kullanacağız. ``Zend\Form`` bileşeni form ve 
+Bu işlemler için ``Zend\Form``’u kullanacağız. ``Zend\Form`` bileşeni form ve 
 doğrulamayı yöneterek ``Album`` varlığımız için ``Zend\InputFilter`` ekler.
 Formu tanımlamak için ``module/Album/src/Album/Form`` dizininde ``AlbumForm.php`` 
 dosyasında bulunan ``Zend\Form\Form`` sınıfını genişleten(extend) 
@@ -69,12 +68,12 @@ dosyasında bulunan ``Zend\Form\Form`` sınıfını genişleten(extend)
         }
     }
 
-``AlbumForm`` sınıfının yapıcısında(constructor), ebeveyn yapıcısını çağırarak
+``AlbumForm`` sınıfının yapıcısında *constructor*, ebeveyn yapıcısını çağırarak
 form ismini atadık. Daha sonra, id, artist, title form elemanlarını ve submit 
 butonunu oluşturduk. Her form elemanı için çeşitli nitelik ve seçenekler atadık.
 Görüntülenecek etiket vb. gibi.
 
-Aynı zamanda bu form için bir doğrulama kurmamız gerekir. Zend Framework 2'de
+Aynı zamanda bu form için bir doğrulama kurmamız gerekir. Zend Framework 2’de
 doğrulama, input filter kullanarak, bağımsız yada model varlığı gibi
 ``InputFilterAwareInterface`` arayüzünü uyarlayan bir sınıf içinde yapılabilir.
 Bu örnekte ``Album`` varlığımıza input filter ekleyeceğiz.
@@ -218,7 +217,7 @@ doğrulaması ekledik.
         }
     //...
 
-``AlbumForm``'u namespace use listesine ekledikten sonra ``addAction()`` metodunu
+``AlbumForm``’u namespace use listesine ekledikten sonra ``addAction()`` metodunu
 uyarladık. Şimdi ``addAction()`` metodu kodlarına detaylı olarak bakalım.
 
 .. code-block:: php
@@ -240,8 +239,8 @@ için yaptık.
         if ($form->isValid()) {
 
 Eğer ``Request`` nesnesinin ``isPost()`` metodu true döndürürse form gönderilmiş
-demektir. *form*'un input filtresine *album* örneğinden aldığımız filtreyi gönderdik.
-Daha sonra post edilmiş veriyi *form*'a göderdik ve formun ``isValid()`` metodu ile
+demektir. *form*’un input filtresine *album* örneğinden aldığımız filtreyi gönderdik.
+Daha sonra post edilmiş veriyi *form*’a göderdik ve formun ``isValid()`` metodu ile
 geçerliliğini kontrol ettik.
 
 .. code-block:: php
@@ -256,7 +255,7 @@ geçerliliğini kontrol ettik.
     // Redirect to list of albums
     return $this->redirect()->toRoute('album');
 
-Yeni albüm kaydını ekledikten sonra ``Redirect`` controller eklentisi ile albüm
+Yeni albüm kaydını ekledikten sonra ``Redirect`` denetçi eklentisi ile albüm
 listesine dönüş için yönlendirdik.
 
 .. code-block:: php
@@ -264,10 +263,10 @@ listesine dönüş için yönlendirdik.
     return array('form' => $form);
 
 Son olarak görüntüye aktaracağımız değişkenleri(bu durumda sadece formu) atadık.
-Zend Framework 2, aynı zamanda view a aktarılacak gerekli değişkenleri içeren bir diziyi
+Zend Framework 2, aynı zamanda görüntüye aktarılacak gerekli değişkenleri içeren bir diziyi
 basitçe geri döndürmenize izin verir. Aslında perde arkasında bir ``ViewModel`` yaratılır.
 
-Şimdi formu görüntülemek için add.phtml view dosyasına ihtiyacımız var:
+Şimdi formu görüntülemek için add.phtml görüntü dosyasına ihtiyacımız var:
 
 .. code-block:: php
 
@@ -291,8 +290,8 @@ basitçe geri döndürmenize izin verir. Aslında perde arkasında bir ``ViewMod
     echo $this->form()->closeTag();
 
 Daha önce yaptığımız gibi sayfa başlığını ayarladık sonra formu işledik. Zend 
-Framework, form işlemeyi kolaylaştıran bazı view helperlar sunar. ``form()``
-view helper'ında bulunan ``openTag()`` ve ``closeTag()`` metodları ile formu 
+Framework, form işlemeyi kolaylaştıran bazı görüntü yardımcıları sunar. ``form()``
+görüntü yardımcılarında bulunan ``openTag()`` ve ``closeTag()`` metodları ile formu 
 açıp kapattık (HTML de <form ...> ... </form>). Sonrasında, etiketi olan form 
 elemanları için ``formRow()`` diğer iki eleman için ise ``formHidden()`` ve
 ``formSubmit()`` metodlarını kullandık.
@@ -350,8 +349,8 @@ Bu sefer ``AlbumController`` içinde ``editAction()`` eylemini kullanacağız.
     //...
 
 Bu kod oldukça tanıdık geliyor olmalı. Albüm ekleme kodundan farklılıklarına 
-bakalım. İlk önce, eşleşen *route* 'da bulunan ve düzenlenecek albümü yüklemek
-için kullanacağımız ``id``' ye bakalım:
+bakalım. İlk önce, eşleşen *route* ’da bulunan ve düzenlenecek albümü yüklemek
+için kullanacağımız ``id``’ ye bakalım:
 
 .. code-block:: php
 
@@ -363,9 +362,9 @@ için kullanacağımız ``id``' ye bakalım:
     }
     $album = $this->getAlbumTable()->getAlbum($id);
 
-``params`` eşleşen *route* 'dan uygun parametreleri getirmeye yarayan bir
-controller eklentisidir. ``params`` ile modülün ``module.config.php`` dosyasında 
-oluşturduğumuz *route* 'dan ``id``'yi almak için kullandık. Eğer ``id`` sıfır(0) 
+``params`` eşleşen *route* ’dan uygun parametreleri getirmeye yarayan bir
+denetçi eklentisidir. ``params`` ile modülün ``module.config.php`` dosyasında 
+oluşturduğumuz *route* ’dan ``id``’yi almak için kullandık. Eğer ``id`` sıfır(0) 
 ise ekle eylemine yönlendirdik, değilse veritabananından albüm kaydını getirdik.
 
 .. code-block:: php
@@ -374,7 +373,7 @@ ise ekle eylemine yönlendirdik, değilse veritabananından albüm kaydını get
     $form->bind($album);
     $form->get('submit')->setAttribute('value', 'Edit');
 
-*form* 'un ``bind()`` metodu modeli forma iliştirir. Bu iki şekilde kullanılmıştır.
+*form* ’un ``bind()`` metodu, modeli forma iliştirir. Bu iki şekilde kullanılmıştır.
 
 # Form görüntülenirken, her form elemenanın başlangıç değerleri 
   modelden aktarılır.
@@ -382,9 +381,9 @@ ise ekle eylemine yönlendirdik, değilse veritabananından albüm kaydını get
   modele geri konur.
 
 Bu operasyonlar hydrator nesnesi kullanılarak yapılır. Birçok hydrator
-vardır. Bunlardan bir tanasei ise, modelde  ``getArrayCopy()`` ve
+vardır. Bunlardan bir tanesi ise, modelde  ``getArrayCopy()`` ve
 ``exchangeArray()`` metodları bekleyen ``Zend\Stdlib\Hydrator\ArraySerializable``
-hydrator üdür. ``Album`` varlığında ``exchangeArray()`` metodunu zaten
+hydratorüdür. ``Album`` varlığında ``exchangeArray()`` metodunu zaten
 yazmıştık. Şimdi sadece ``getArrayCopy()`` metodunu yazmamız gerekiyor.
 
 .. code-block:: php
@@ -405,11 +404,11 @@ yazmıştık. Şimdi sadece ``getArrayCopy()`` metodunu yazmamız gerekiyor.
         }
     // ...
 
-``$album`` 'e form verisini tekrar doldurmaya gerek yok, çünkü hydrator ü ile 
+``$album``’e form verisini tekrar doldurmaya gerek yok, çünkü hydratorü ile 
 ``bind()`` kullanmanın bir sonucu olarak bu zaten yapılmıştır. Böylece sadece
 ``saveAlbum()`` metodunu kullanarak değişiklikleri veritabanına kaydederiz.
 
-``edit.phtml`` view şablonu albüm eklemede kullanılan şablona oldukça benzerdir:
+``edit.phtml`` görüntü şablonu albüm eklemede kullanılan şablona oldukça benzerdir:
 
 .. code-block:: php
 
@@ -450,10 +449,10 @@ Albüm Silme
 Uygulamamızı tamamlamak için silme işlemine ihtiyacımız var. Liste sayfamızda
 her albüm kaydının yanında bir silme linki var. Link tıklandığında kaydı hemen
 silme gibi safça bir yaklaşım yanlış olur. HTTP tanımlamalarını göz önüne alarak, 
-GET kullanarak geri dönüşü olmayan bir eylem yapmamanız ve POST kullanmanız
+GET kullanarak geri dönüşü olmayan bir eylem **yapmamanız** ve POST kullanmanız
 gerektiğini hatırlatırız.
 
-Kullanıcı delete'e tıkladığında bir onay formu göstermek zorundayız. “yes”'e
+Kullanıcı delete’e tıkladığında bir onay formu göstermek zorundayız. “yes”’e
 tıklayınca silme işlemini yapacağız. Burdaki form çok önemli olmadığı için
 bunu doğrudan view da yapacağız. 
 
@@ -491,14 +490,14 @@ bunu doğrudan view da yapacağız.
         }
     //...
 
-Daha önce yaptığımız gibi, eşleşen route'dan ``id``'yi alıyoruz ve onay 
+Daha önce yaptığımız gibi, eşleşen route’dan ``id``’yi alıyoruz ve onay 
 sayfasını göstermek ya da silme işlemini belirlemek için istek nesnesinin 
 ``isPost()`` metodunu kontrol ediyoruz. ``deleteAlbum()`` ile kaydı silmek için 
 album table nesnesini kullanıyoruz ve albüm listesine yönlendirme yapıyoruz.
-İstek POST değil ise ``id`` ile ilgili veritabanı kaydını alarak view'a
+İstek POST değil ise ``id`` ile ilgili veritabanı kaydını alarak görüntüye
 aktarıyoruz.
 
-View dosyamız basit bir formdan ibaret:
+Görüntü dosyamız basit bir formdan ibaret:
 
 .. code-block:: php
 
@@ -540,7 +539,7 @@ görüntülemiyor.
 
 Nedeni ``Application`` modülünün ``module.config.php`` dosyasındaki *route* 
 yapılandırmasıdır. Değiştirmek için, ``module/Application/config/module.config.php``
-dosyasını açın ve *route* u bulun:
+dosyasını açın ve *route*’u bulun:
 
 .. code-block:: php
 
@@ -555,7 +554,7 @@ dosyasını açın ve *route* u bulun:
         ),
     ),
 
-``controller`` dan ``Application\Controller\Index`` i 
+``controller`` dan ``Application\Controller\Index``’i 
 ``Album\Controller\Album`` olarak değiştir:
 
 .. code-block:: php

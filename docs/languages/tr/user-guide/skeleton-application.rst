@@ -15,9 +15,9 @@ Bu dosyayı sanal hostlarınızı tuttuğunuz dizine açıp ismini ``zf2-tutoria
 olarak değiştiriniz.
 
 ZendSkeletonApplication bağımlılıkları çözümlemek için Composer (http://getcomposer.org)
-kullanmak üzere ayarlanmıştır. Dersimizde sözkonusu bağımlılık Zend Framework 2'dir.
+kullanmak üzere ayarlanmıştır. Dersimizde sözkonusu bağımlılık Zend Framework 2’dir.
 
-Zend Framework 2'yi kurmak için ``zf2-tutorial`` dizininden basitçe şu komutları yazıyoruz:
+Zend Framework 2’yi kurmak için ``zf2-tutorial`` dizininden basitçe şu komutları yazıyoruz:
 
 .. code-block:: bash
 
@@ -44,17 +44,18 @@ Bu biraz zaman alabilir. Şöyle bir çıktı görmelisiniz:
           The process timed out. 
 
     bağlantınız tüm paketi belli bir zamanda indirmek için yavaş ve Composer zaman
-    aşımına uğramıştır. Bunu önlemek için, bunun yerine:
+    aşımına uğramıştır. Bunu önlemek için:
 
     .. code-block:: bash
 
         php composer.phar install
 
-    bunu çalıştırıyoruz:
+    yerine:
 
     .. code-block:: bash
 
         COMPOSER_PROCESS_TIMEOUT=5000 php composer.phar install
+	çalıştırıyoruz.
 
 Şimdi sanal host yapılandırmasına geçebiliriz.
 

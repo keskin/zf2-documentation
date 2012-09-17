@@ -5,13 +5,13 @@
 Biçimleme ve Çeviri
 ###################
 
-SkeletonApplication'ın biçimlemesini olduğu gibi almıştık, fakat sayfa başlığını
+SkeletonApplication’ın biçimlemesini olduğu gibi almıştık, fakat sayfa başlığını
 ve telif hakkı mesajını değiştirmemiz gerekiyor.
 
-ZendSkeletonApplication tüm metinler için ``Zend\I18n``'in çeviri işlevini kullanmak
+ZendSkeletonApplication tüm metinler için ``Zend\I18n``’in çeviri işlevini kullanmak
 için yapılandırılmıştır. Bileşen ``Application/language`` dizinindeki ``.po`` dosyalarını
 kullanır. Metinleri değiştirmek için `poedit <http://www.poedit.net/download.php/>`_
-'e ihtiyacınız olacak. ``Original`` yazı listesindeki “Skeleton Application” 'a 
+’e ihtiyacınız olacak. ``Original`` yazı listesindeki “Skeleton Application”’a 
 tıklayıp çevirisine “Tutorial” yazın.
 
 .. image:: ../images/user-guide.styling-and-translations.poedit.png
@@ -21,7 +21,7 @@ oluşturacak. Eğer ``.mo`` dosyasını oluşturulmamışsa, ``Preferences -> Ed
 daki ``Automatically compile .mo file on save`` kutusunun işaretleyin.
 
 Telif hakkı mesajını değiştirmek için, ``Application`` modülünün ``layout.phtml``
-view dosyasını değiştirmeliyiz.
+görüntü dosyasını değiştirmeliyiz.
 
 .. code-block:: php
 

@@ -27,16 +27,16 @@ sağlayacak. Bu nedenle aşağıdaki sayfalar gerekecektir.
 Dosyalarımızı oluşturmadan önce, frameworkün sayfaların düzeni ile ilgili ne
 beklediğini anlamak çok önemlidir. Bütün sayfalar eylem *action* olarak bilinir ve 
 eylemler *modules* içindeki denetçiler *controllers* içinde guruplandırılmıştır.
-Genelde eylemler(action), Denetçiler(controllers) içinde gruplandırılır. 
-Örneğin; Bir haberler denetçisinin(controller) ``güncel``, ``arşiv``, ``görüntüle`` 
-eylemleri(action) olabilir.
+Genelde eylemler, Denetçiler içinde gruplandırılır. 
+Örneğin; Bir haberler denetçisinin ``güncel``, ``arşiv``, ``görüntüle`` 
+eylemleri olabilir.
 
-Dört sayfamız olduğu için, dört eylemi(action) ``Album`` modülü içinde 
-``AlbumController`` adında tek bir denetçide(controller) gruplayacağız. Dört 
-eylemimiz(action) aşağıdaki gibi olacak:
+Dört sayfamız olduğu için, dört eylemi ``Album`` modülü içinde 
+``AlbumController`` adında tek bir denetçide gruplayacağız. Dört 
+eylemimiz aşağıdaki gibi olacak:
 
 +---------------+---------------------+---------------+
-| Sayfa         | Denetçi(Controller) | Eylem(Action) |
+| Sayfa         | Denetçi             | Eylem         |
 +===============+=====================+===============+
 | Ana Sayfa     | ``AlbumController`` | ``index``     |
 +---------------+---------------------+---------------+
@@ -47,9 +47,9 @@ eylemimiz(action) aşağıdaki gibi olacak:
 | Albüm sil     | ``AlbumController`` | ``delete``    |
 +---------------+---------------------+---------------+
 
-Bir URL ile belirli bir eylemin(action) eşleşmesi, modülün ``module.config.php`` 
-dosyasında tanımlanmış yönlendirmeler(routes) ile yapılır. ``album`` eylemimize(action)
-bir yönlendirme(route) tanımlayacağız. Yeni kodumuz açıklaması ile birlikte güncellenmiş
+Bir URL ile belirli bir eylemin eşleşmesi, modülün ``module.config.php`` 
+dosyasında tanımlanmış yönlendirmeler *routes* ile yapılır. ``album`` eylemimize
+bir yönlendirme *route* tanımlayacağız. Yeni kodumuz açıklaması ile birlikte güncellenmiş
 yapılandırma dosyamız:
 
 .. code-block:: php
@@ -89,17 +89,17 @@ yapılandırma dosyamız:
         ),
     );
 
-Yönlendirme(route) adı ‘album’ ve tipi ‘segment’ tir. Segment yönlendirmeler, URL
+Yönlendirme adı ‘album’ ve tipi ‘segment’’tir. Segment yönlendirmeler, URL
 kalıbı içinde isim parametrelerinin eşleşmesi için belirli placeholderlar sağlar.
 Yapılandırma dosyamızda bulunan **``/album[/:action][/:id]``** segment yönlendirmesi
 göre ``/album`` ile başlayan bütün URL ler ile eşleşir. Sonraki segment isteğe bağlı
-eylem(action) adı ``[/:action]``, diğer segment ise isteğe bağlı id alanı ``[/:id]``
+eylem adı ``[/:action]``, diğer segment ise isteğe bağlı id alanı ``[/:id]``
 ile eşleşir. Köşeli parantezler segmentin isteğe bağlı olduğunu belirtir.
 ``constraints`` bölümü segmentlerin beklenen karakter kurallarını belirlememizi sağlar.
 Bu durumda ``action`` harf ile başlayıp sonraki karakterleri harf, rakam, - ve _ olabilecek
 şekilde kısıtlanmıştır. ``id`` ise sayısal olarak sınırlandırılmıştır.
 
-Bu yönlendirme bize aşağıdaki URL'leri sağlar:
+Bu yönlendirme bize aşağıdaki URL’leri sağlar:
 
 +---------------------+------------------------------+------------+
 | URL                 | Sayfa                        | Eylem      |
@@ -113,28 +113,28 @@ Bu yönlendirme bize aşağıdaki URL'leri sağlar:
 | ``/album/delete/4`` | id si 4 olan albümü sil      | ``delete`` |
 +---------------------+------------------------------+------------+
 
-Denetçiyi(controller) Oluştur
+Denetçiyi Oluştur
 =============================
 
-Şimdi denetçimizi(controller) kurmak için hazırız. Zend Framework 2'de, denetçi 
-(controller) ``{Controller name}Controller`` adlandırılan bir sınıftır. 
-``{Controller name}`` 'in büyük harf ile başlaması gerektiğini unutmayın. Bu sınıf
+Şimdi denetçimizi kurmak için hazırız. Zend Framework 2’de, denetçi 
+``{Controller name}Controller`` adlandırılan bir sınıftır. 
+``{Controller name}``’in büyük harf ile başlaması gerektiğini unutmayın. Bu sınıf
 ``Controller`` dizinindeki ``{Controller name}Controller.php`` dosyası içindedir.
-Dersimize göre ``module/Album/src/Album/Controller`` dizinidir. Her eylemin(action)
-denetçi(controller) içinde ``{action name}Action`` adında public metodu vardır.
+Dersimize göre ``module/Album/src/Album/Controller`` dizinidir. Her eylemin
+denetçi içinde ``{action name}Action`` adında public metodu vardır.
 ``{action name}`` küçük harf ile başlamalıdır.
 
 .. note::
 
     Kural Gereği: Zend Framework 2 denetçiler üzerinde ``Zend\Stdlib\Dispatchable``
-    arabirimini implemente etmedikleri sürece herhangi bir kısıtlama sağlamaz.
+    arabirimini uyarlamadıkları etmedikleri sürece herhangi bir kısıtlama sağlamaz.
     Framework, bunun için bize 2 soyut sınıf sağlar: 
     ``Zend\Mvc\Controller\AbstractActionController`` ve 
     ``Zend\Mvc\Controller\AbstractRestfulController``. Biz standart
     ``AbstractActionController`` sınıfını kullanacağız. Fakat RESTful web servisi
     yazacaksanız ``AbstractRestfulController`` sizin için kullanışlı olabilir.
 
-Denetçi(controller) sınıfımızı oluşturarak devam edelim:
+Denetçi sınıfımızı oluşturarak devam edelim:
 
 .. code-block:: php
 
@@ -168,8 +168,8 @@ Denetçi(controller) sınıfımızı oluşturarak devam edelim:
     Modülümüze, ``config/module.config.php`` dosyasındaki ‘controller’
     bölümümüzde denetçimiz hakkında bilgi vermiştik.
 
-Şimdi kullanmak istediğimiz dört eylemi yazalım. Eylemler, görüntü(view) dosyalarını 
-oluşturmadan çalışmazlar. Her eylem için URL'ler aşağıdaki gibidir:
+Şimdi kullanmak istediğimiz dört eylemi yazalım. Eylemler, görüntü dosyalarını 
+oluşturmadan çalışmazlar. Her eylem için URL’ler aşağıdaki gibidir:
 
 +--------------------------------------------+----------------------------------------------------+
 | URL                                        | Çağrılan metod                                     |
@@ -183,16 +183,16 @@ oluşturmadan çalışmazlar. Her eylem için URL'ler aşağıdaki gibidir:
 | http://zf2-tutorial.localhost/album/delete | ``Album\Controller\AlbumController::deleteAction`` |
 +--------------------------------------------+----------------------------------------------------+
 
-Şu an uygulamamızın çalışan bir yönlendiricisi(router) ve eylemleri hazır.
+Şu an uygulamamızın çalışan bir yönlendiricisi *router* ve eylemleri hazır.
 
-Görüntü(view) ve modellerimizi oluşturmanın zamanı geldi.
+Görüntü ve modellerimizi oluşturmanın zamanı geldi.
 
 Görüntü dosyalarını hazırlayalım
 --------------------------------
 
-Uygulamamıza görüntü entegre etmek için tek yapmamız gereken birkaç görütü(view)
+Uygulamamıza görüntü entegre etmek için tek yapmamız gereken birkaç görütü
 dosyası oluşturmaktır. Görüntü dosyaları ``DefaultViewStrategy`` tarafından çalıştırılacak,
-denetçi(controller) eylemine(action) değişken olarak aktarılacak veya görüntü modeli 
+denetçi eylemine değişken olarak aktarılacak veya görüntü modeli 
 olarak dönecektir. Görüntü dosyaları modül görüntü dizini içindeki adı denetçi adı olan
 dizinde bulunur. Şimdi aşağıdaki isimlerde boş görüntü dosyaları oluşturalım.
 
