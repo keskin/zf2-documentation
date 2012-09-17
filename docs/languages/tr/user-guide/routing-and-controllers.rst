@@ -1,9 +1,9 @@
 .. EN-Revision: none
 .. _user-guide.routing-and-controllers:
 
-#########################################
-Yönlendirme(Route) ve Denetçi(controller)
-#########################################
+######################
+Yönlendirme ve Denetçi
+######################
 
 Albüm kolleksiyonumuzu göstermek için basit bir envanter sistemi kuracağız.
 Ana sayfa, kolleksiyonumuzu listeleyecek ve ekleme, düzenleme ve silmemizi

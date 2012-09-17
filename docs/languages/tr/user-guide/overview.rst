@@ -12,7 +12,7 @@ edinmek için kodu kurcalayabilirsiniz.
 
 .. note::
 
-    **Çeviri notları:** Yazılım dünyasında genel kabül görmüş ve belirli bir durum veya 
+    Çeviri notu: Yazılım dünyasında genel kabül görmüş ve belirli bir durum veya 
 	özelliği tanımlayan/anlatan bazı terimlerin Türkçe’ye çevrimi çok zordur. Örneğin:
 	clousure, placeholder, hydrator vb. Bu terimlerin doğrudan kelime anlamını vermek
 	bazı anlam kaymalarına neden olacak ve dökümanının anlaşılmasını zorlaştıracaktır.
