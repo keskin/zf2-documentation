@@ -56,7 +56,7 @@ Bu biraz zaman alabilir. Şöyle bir çıktı görmelisiniz:
 
         COMPOSER_PROCESS_TIMEOUT=5000 php composer.phar install
 
-	çalıştırıyoruz.
+    çalıştırıyoruz.
 
 Şimdi sanal host yapılandırmasına geçebiliriz.
 

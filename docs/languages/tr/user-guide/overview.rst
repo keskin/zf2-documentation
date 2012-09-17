@@ -12,26 +12,27 @@ edinmek için kodu kurcalayabilirsiniz.
 
 .. note::
 
-    Çeviri notu: Yazılım dünyasında genel kabül görmüş ve belirli bir durum veya 
-	özelliği tanımlayan/anlatan bazı terimlerin Türkçe’ye çevrimi çok zordur. Örneğin:
-	clousure, placeholder, hydrator vb. Bu terimlerin doğrudan kelime anlamını vermek
-	bazı anlam kaymalarına neden olacak ve dökümanının anlaşılmasını zorlaştıracaktır.
-	
-	Bu nedenle bu terimleri türkçeye çevirmeden olduğu gibi bıraktım. Aşağıdaki listede
-	bulunan terimleri ise en yakın türkçe kelimeye çevrimini yaptım. Dökümanı okumadan önce
-	bu listeye bir göz atmanızda fayda var.
-	
-	* controller:	denetçi
-	* action:		eylem
-	* view:			görüntü
-	* routing:		yönlendirme
-	* roter:		yönlendirici
-	* route:		yön
-	* constructor:	yapıcı
-	* helper:		yardımcı
-	* plugin:		eklenti
-	* extend:		genişletmek
-	* implement:	uyarlamak
+    **Çeviri notu:** Yazılım dünyasında genel kabül görmüş ve belirli bir durum veya 
+    özelliği tanımlayan/anlatan bazı terimlerin Türkçe’ye çevrimi çok zordur. Örneğin:
+    clousure, placeholder, hydrator vb. Bu terimlerin doğrudan kelime anlamını vermek
+    bazı anlam kaymalarına neden olacak ve dökümanının anlaşılmasını zorlaştıracaktır.
+    
+    Bu nedenle bu terimleri türkçeye çevirmeden olduğu gibi bıraktım. Aşağıdaki listede
+    bulunan terimleri ise en yakın türkçe kelimeye çevrimini yaptım. Dökümanı okumadan önce
+    bu listeye bir göz atmanızda fayda var.
+    
+    * controller:	denetçi
+    * action:		eylem
+    * view:			görüntü
+    * routing:		yönlendirme
+    * router:		yönlendirici
+    * route:		yön
+    * constructor:	yapıcı
+    * helper:		yardımcı
+    * plugin:		eklenti
+    * extend:		genişletmek
+    * implement:	uyarlamak
+    * interface:	arayüz
 
 .. _user-guide.overview.assumptions:
 
