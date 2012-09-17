@@ -12,27 +12,30 @@ edinmek için kodu kurcalayabilirsiniz.
 
 .. note::
 
-    **Çeviri notu:** Yazılım dünyasında genel kabül görmüş ve belirli bir durum veya 
-    özelliği tanımlayan/anlatan bazı terimlerin Türkçe’ye çevrimi çok zordur. Örneğin:
-    clousure, placeholder, hydrator vb. Bu terimlerin doğrudan kelime anlamını vermek
-    bazı anlam kaymalarına neden olacak ve dökümanının anlaşılmasını zorlaştıracaktır.
+    **Çeviri notu:** Yazılım dünyasında genel kabül görmüş ve belirli bir durum 
+    veya özelliği tanımlayan/anlatan bazı terimlerin Türkçe’ye çevrimi çok zordur.
+    Örneğin: clousure, placeholder, hydrator vb. Bu terimlerin doğrudan kelime 
+    anlamını vermek bazı anlam kaymalarına neden olacak ve dökümanının 
+    anlaşılmasını zorlaştıracaktır.
     
-    Bu nedenle bu terimleri türkçeye çevirmeden olduğu gibi bıraktım. Aşağıdaki listede
-    bulunan terimleri ise en yakın türkçe kelimeye çevrimini yaptım. Dökümanı okumadan önce
-    bu listeye bir göz atmanızda fayda var.
+    Bu nedenle dökümanda geçen bazı terimleri türkçeye çevirmeden olduğu gibi 
+    bıraktım. Aşağıdaki listede bulunan terimleri ise en yakın türkçe kelimeye 
+    çevirdim. Dökümanı okumadan önce bu listeye bir göz atmanızda fayda var:
     
-    * controller:	denetçi
-    * action:		eylem
-    * view:			görüntü
-    * routing:		yönlendirme
-    * router:		yönlendirici
-    * route:		yön
-    * constructor:	yapıcı
-    * helper:		yardımcı
-    * plugin:		eklenti
-    * extend:		genişletmek
-    * implement:	uyarlamak
-    * interface:	arayüz
+    * **controller:** denetçi
+    * **action:** eylem
+    * **view:** görüntü
+    * **routing:** yönlendirme
+    * **router:** yönlendirici
+    * **route:** yön
+    * **constructor:** yapıcı
+    * **helper:** yardımcı
+    * **plugin:** eklenti
+    * **extend:** genişletmek
+    * **implement:** uyarlamak
+    * **interface:** arayüz
+    * **extension:** uzantı
+    * **entity:** varlık
 
 .. _user-guide.overview.assumptions:
 
@@ -43,7 +46,7 @@ Bu ders, PDO uzantısına erişilebilen PHP 5.3.10, Apache web sunucusu ve MySQL
 çalıştırdığınızı varsayar. Apache, mod_rewrite uzantısı ile kurulmuş
 ve yapılandırılmış olmalıdır.
 
-Ayrıca Apache'nin ``.htaccess`` dosya desteği ile yapılandırılmış olduğuna emin olunuz.
+Ayrıca Apache’nin ``.htaccess`` dosya desteği ile yapılandırılmış olduğuna emin olunuz.
 Genelde, ``httpd.conf`` dosyasında;
 
 .. code-block:: apache

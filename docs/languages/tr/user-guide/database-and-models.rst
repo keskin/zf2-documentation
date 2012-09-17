@@ -57,7 +57,7 @@ sınıfı yaratarak çok basit bir model oluşturacağız. Bu model, veritabanı
 tablosundaki kayıtlara erişimi sağlayan bir arabirim olan Table Data Gateway
 tasarım deseni uyarlamasıdır. Table Data Gateway deseninin büyük sistemlerde
 sınırlayıcı olabileceğini unutmayın. ``Zend\Db\TableGateway\AbstractTableGateway``
-ile veritabanı erişim kodlarını denetleyici (controller) eylem(action) metodları 
+ile veritabanı erişim kodlarını denetleyici eylem metodları 
 içine koymak gibi bir hata yapmayın!
 
 ``Model`` dizinindeki ``Album`` varlık sınıfı ile başlayalım:
@@ -310,11 +310,11 @@ Bunun için ``AlbumController`` içinde ``indexAction()`` eylemini yazmalıyız:
         }
     // ...
 
-Zend Framework 2'de, görüntüye değişkenler gönderebilmek için, ilk parametresi, 
+Zend Framework 2’de, görüntüye değişkenler gönderebilmek için, ilk parametresi, 
 ihtiyacımız olan veriyi içeren diziye sahip ``ViewModel`` örneği döndürürüz.
 ``ViewModel`` nesnesi aynı zamanda hangi görüntü dosyasını kullanılacağını
 belirlememize olanak sağlar. Fakat kullanılan, varsayılan dosya
-``{controller name}/{action name}`` ’dir. Şimdi ``index.phtml`` görüntü dosyasını
+``{controller name}/{action name}``’dir. Şimdi ``index.phtml`` görüntü dosyasını
 oluşturalım.
 
 .. code-block:: php
