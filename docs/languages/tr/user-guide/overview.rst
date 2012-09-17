@@ -1,4 +1,4 @@
-.. EN-Revision: 4e4055e
+.. EN-Revision: none
 .. _user-guide.overview:
 ##########################
 Zend Framework 2 Başlarken

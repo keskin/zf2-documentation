@@ -1,4 +1,4 @@
-.. EN-Revision: bb788a9
+.. EN-Revision: none
 .. _user-guide.skeleton-application:
 
 ###########################

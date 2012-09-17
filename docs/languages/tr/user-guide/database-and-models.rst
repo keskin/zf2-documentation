@@ -1,4 +1,4 @@
-.. EN-Revision: 4be0cd1
+.. EN-Revision: none
 .. _user-guide.database-and-models:
 
 ######################

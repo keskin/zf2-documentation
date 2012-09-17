@@ -1,4 +1,4 @@
-.. EN-Revision: d4e4bc6
+.. EN-Revision: none
 .. _user-guide.styling-and-translations:
 
 ###################
